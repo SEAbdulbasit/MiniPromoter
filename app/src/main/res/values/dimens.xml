@@ -31,6 +31,8 @@
     <dimen name="seventy_dp">70dp</dimen>
     <dimen name="seven_dp">7dp</dimen>
     <dimen name="twenty_dp">20dp</dimen>
+    <dimen name="list_item_spacing">16dp</dimen>
+    <dimen name="list_item_spacing_half">8dp</dimen>
 
 
 </resources>

@@ -15,7 +15,7 @@ class FragmentProductViewModel :
     val prodcutList = App.getUserRepository().getProductsList()
 
 
-    class Factory() :
+    class Factory :
         ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(FragmentProductViewModel::class.java)) {

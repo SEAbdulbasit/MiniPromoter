@@ -3,6 +3,7 @@ package com.example.minipromoter.db
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.minipromoter.models.Campain
 import com.example.minipromoter.models.ProductModel
 import com.example.minipromoter.models.UserModel
 
@@ -20,8 +21,8 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE id LIKE :value LIMIT 1")
     fun getSingleUser(value: String): LiveData<UserModel>
 
-    @Query("SELECT * FROM users ")
-    fun getProductUser(/*value: String*/): LiveData<List<UserModel>>
+    @Query("SELECT * FROM users WHERE productId LIKE :value")
+    fun getProductUser(value: String): LiveData<List<UserModel>>
 }
 
 @Dao
@@ -38,14 +39,28 @@ interface ProductDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProduct(user: ProductModel)
 
-    @Query("SELECT * FROM products WHERE productName LIKE :value LIMIT 1")
-    fun getProduct(value: String): LiveData<ProductModel>
 }
 
-@Database(entities = [UserModel::class, ProductModel::class], version = 1)
+@Dao
+interface CampainDao {
+    @Query("SELECT * FROM campains")
+    fun getAllCamapins(): LiveData<List<Campain>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAllCampains(vararg users: Campain)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCampain(campain: Campain)
+
+    @Query("SELECT * FROM campains WHERE productId LIKE :value")
+    fun getProductCamapains(value: String): LiveData<List<Campain>>
+}
+
+@Database(entities = [UserModel::class, ProductModel::class, Campain::class], version = 1)
 abstract class UserDatabase : RoomDatabase() {
     abstract val userDao: UserDao
     abstract val productDao: ProductDao
+    abstract val campainDao: CampainDao
 }
 
 private lateinit var INSTANCE: UserDatabase

@@ -24,8 +24,8 @@ class IncomingSMS : BroadcastReceiver() {
         if (bundle != null) {
             var from: String = ""
             var smsBody: String = ""
-            val pdus = bundle.get("pdus") as Array<Any>
-            for (onePdus: Any in pdus) {
+            val pdus = bundle.get("pdus") as Array<*>
+            for (onePdus: Any? in pdus) {
                 val oneSMS = SmsMessage.createFromPdu(onePdus as ByteArray)
                 str += "SMS from " + oneSMS.originatingAddress
                 str += " :"

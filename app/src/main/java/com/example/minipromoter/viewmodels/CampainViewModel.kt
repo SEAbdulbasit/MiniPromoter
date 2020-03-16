@@ -6,24 +6,24 @@ import com.example.minipromoter.App
 import com.example.minipromoter.models.ToolbarModel
 
 //
-// Created by Abdul Basit on 2/19/2020.
-// Copyright (c) 2020 VisionX. All rights reserved.
+// Created by Abdul Basit on 3/12/2020.
 //
 
-class UserViewModel(private val prodcutName: String) : BaseViewModel() {
+class CampainViewModel(private val prodcutName: String) : BaseViewModel() {
 
-    val userList = App.getUserRepository().getProdcutUsersList("Product $prodcutName")
-    val toolbarModel = ToolbarModel(prodcutName)
+
+    val campainList = App.getUserRepository().getProductCampains(prodcutName)
 
 
     class Factory(private val prodcutName: String) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(UserViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(CampainViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return UserViewModel(prodcutName) as T
+                return CampainViewModel(prodcutName) as T
             }
             throw IllegalArgumentException("Unable to construct view model")
         }
     }
+
 }

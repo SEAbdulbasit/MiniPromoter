@@ -51,7 +51,7 @@ class ProductsFragment : Fragment() {
         binding.rvProduct.adapter = ProductSelectionAdapter(OnClickListener {
 
             val directions =
-                ProductsFragmentDirections.actionProductsFragmentToUserFragment(it.productName)
+                ProductsFragmentDirections.actionProductsFragmentToCampainsFragment(it.productName)
             findNavController().navigate(directions)
 
         })
@@ -87,10 +87,10 @@ class ProductsFragment : Fragment() {
         alertDialog.setButton(
             AlertDialog.BUTTON_POSITIVE,
             "OK"
-        ) { p0, p1 ->
+        ) { p0, _ ->
             println("Input Text : ${dialogView.etName}")
 
-            runBlocking {
+            runBlocking(Dispatchers.IO) {
                 App.getUserRepository().insertProduct(dialogView.etName.text.toString())
             }
             p0.dismiss()
@@ -99,7 +99,7 @@ class ProductsFragment : Fragment() {
         alertDialog.setButton(
             AlertDialog.BUTTON_NEGATIVE,
             "Cancel"
-        ) { p0, p1 ->
+        ) { p0, _ ->
 
             p0.dismiss()
         }

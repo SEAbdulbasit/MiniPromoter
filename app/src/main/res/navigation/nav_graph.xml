@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_productsFragment_to_userFragment"
             app:destination="@id/userFragment" />
+        <action
+            android:id="@+id/action_productsFragment_to_campainsFragment"
+            app:destination="@id/campainsFragment" />
     </fragment>
     <fragment
         android:id="@+id/userFragment"
@@ -21,6 +24,15 @@
         tools:layout="@layout/fragment_user" >
         <argument
             android:name="prodName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/campainsFragment"
+        android:name="com.example.minipromoter.fragment.CampainsFragment"
+        android:label="fragment_campains"
+        tools:layout="@layout/fragment_campains" >
+        <argument
+            android:name="productName"
             app:argType="string" />
     </fragment>
 </navigation>

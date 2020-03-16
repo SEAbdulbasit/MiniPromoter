@@ -3,6 +3,7 @@ package com.example.minipromoter.repository
 import androidx.lifecycle.LiveData
 import com.example.minipromoter.App
 import com.example.minipromoter.db.getDatabase
+import com.example.minipromoter.models.Campain
 import com.example.minipromoter.models.ProductModel
 import com.example.minipromoter.models.UserModel
 import kotlinx.coroutines.Dispatchers
@@ -25,13 +26,24 @@ class UserRepository {
     }
 
     fun getProdcutUsersList(produtName: String): LiveData<List<UserModel>> {
-        return database.userDao.getProductUser(/*produtName*/)
+        return database.userDao.getProductUser(produtName)
     }
+
+    fun getProductCampains(produtName: String): LiveData<List<Campain>> {
+        return database.campainDao.getProductCamapains(produtName)
+    }
+
 
     suspend fun insertProduct(name: String) {
         withContext(Dispatchers.IO) {
             val productModel = ProductModel(name)
             database.productDao.insertProduct(productModel)
+        }
+    }
+
+    suspend fun insertCampain(campain: Campain) {
+        withContext(Dispatchers.IO) {
+            database.campainDao.insertCampain(campain)
         }
     }
 

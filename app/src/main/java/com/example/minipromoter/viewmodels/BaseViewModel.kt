@@ -6,23 +6,19 @@ package com.example.minipromoter.viewmodels
 //
 
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
-import android.os.Bundle
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.minipromoter.App
 
 open class BaseViewModel :
     AndroidViewModel(App.getInstance()) {
-    val showToastMessage = MutableLiveData<Boolean>(false)
-    val toastMessage = MutableLiveData<String>("")
-    val showProgressDialog = MutableLiveData<Boolean>(false)
-    val cartItemsCount = MutableLiveData(0)
-    val navigateToLoginScreen = MutableLiveData<Boolean>(false)
+    private val showToastMessage = MutableLiveData(false)
+    private val toastMessage = MutableLiveData("")
+   // val showProgressDialog = MutableLiveData<Boolean>(false)
+   // val cartItemsCount = MutableLiveData(0)
+   // val navigateToLoginScreen = MutableLiveData<Boolean>(false)
 
-
+/*
     internal fun transitionActivities(
         current: Context,
         newActivity: Class<*>,
@@ -49,9 +45,9 @@ open class BaseViewModel :
         if (isFinished) {
             (current as Activity).finish()
         }
-    }
+    }*/
 
-    internal fun transitionActivitiesBundleWithFlags(
+/*    internal fun transitionActivitiesBundleWithFlags(
         current: Context,
         newActivity: Class<*>,
         bundle: Bundle,
@@ -69,8 +65,8 @@ open class BaseViewModel :
         if (isFinished) {
             (current as Activity).finish()
         }
-    }
-
+    }*/
+/*
     protected fun transitionActivitiesFlags(
         current: Context,
         newActivity: Class<*>,
@@ -87,8 +83,9 @@ open class BaseViewModel :
         if (isFinished) {
             (current as Activity).finish()
         }
-    }
+    }*/
 
+/*
     protected fun transitionAndFinishPreviousAcitivtes(
         current: Context,
         newActivity: Class<*>,
@@ -98,6 +95,7 @@ open class BaseViewModel :
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         current.startActivity(intent)
     }
+*/
 
     protected fun showToast(message: String) {
         toastMessage.value = message
