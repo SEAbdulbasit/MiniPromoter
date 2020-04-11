@@ -12,7 +12,7 @@ import com.example.minipromoter.models.ToolbarModel
 
 class UserViewModel(private val prodcutName: String) : BaseViewModel() {
 
-    val userList = App.getUserRepository().getProdcutUsersList("Product $prodcutName")
+    val userList = App.getUserRepository().getProductUsersList("Product $prodcutName")
     val toolbarModel = ToolbarModel(prodcutName)
 
 

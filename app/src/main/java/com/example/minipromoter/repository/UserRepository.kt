@@ -3,7 +3,7 @@ package com.example.minipromoter.repository
 import androidx.lifecycle.LiveData
 import com.example.minipromoter.App
 import com.example.minipromoter.db.getDatabase
-import com.example.minipromoter.models.Campain
+import com.example.minipromoter.models.Campaign
 import com.example.minipromoter.models.ProductModel
 import com.example.minipromoter.models.UserModel
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 //
 
 class UserRepository {
-    val database = getDatabase(App.getInstance())
+    private val database = getDatabase(App.getInstance())
 
 
     fun getProductsList(): LiveData<List<ProductModel>> {
@@ -25,25 +25,25 @@ class UserRepository {
         return database.productDao.getAllProductsWithOutLiveData()
     }
 
-    fun getProdcutUsersList(produtName: String): LiveData<List<UserModel>> {
+    fun getProductUsersList(produtName: String): LiveData<List<UserModel>> {
         return database.userDao.getProductUser(produtName)
     }
 
-    fun getProductCampains(produtName: String): LiveData<List<Campain>> {
-        return database.campainDao.getProductCamapains(produtName)
+    fun getProductCampaigns(productId: Int): LiveData<List<Campaign>> {
+        return database.campainDao.getProductCamapains(productId)
     }
 
 
     suspend fun insertProduct(name: String) {
         withContext(Dispatchers.IO) {
-            val productModel = ProductModel(name)
+            val productModel = ProductModel(productName = name)
             database.productDao.insertProduct(productModel)
         }
     }
 
-    suspend fun insertCampain(campain: Campain) {
+    suspend fun insertCampaign(campaign: Campaign) {
         withContext(Dispatchers.IO) {
-            database.campainDao.insertCampain(campain)
+            database.campainDao.insertCampain(campaign)
         }
     }
 

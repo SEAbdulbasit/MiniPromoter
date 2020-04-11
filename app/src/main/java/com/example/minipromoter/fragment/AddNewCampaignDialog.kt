@@ -1,6 +1,7 @@
 package com.example.minipromoter.fragment
 
 import android.os.Bundle
+import android.os.Parcelable
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.minipromoter.R
 import com.example.minipromoter.databinding.FragmentAddNewCampainDialogListDialogBinding
-import com.example.minipromoter.viewmodels.AddNewCampainDialogViewModel
-import com.example.minipromoter.viewmodels.CampainViewModel
+import com.example.minipromoter.models.ProductModel
+import com.example.minipromoter.viewmodels.AddNewCampaignDialogViewModel
 import kotlinx.android.synthetic.main.fragment_add_new_campain_dialog_list_dialog.*
 
 // TODO: Customize parameter argument names
@@ -28,21 +29,21 @@ const val ARG_ITEM_COUNT = "item_count"
 
 private const val PRODUCT_NAME = "param1"
 
-class AddNewCampainDialog : BottomSheetDialogFragment() {
+class AddNewCampaignDialog : BottomSheetDialogFragment() {
 
-    private var productName: String? = null
+    private var productName: ProductModel? = null
 
-    private val viewModel: AddNewCampainDialogViewModel by lazy {
+    private val viewModel: AddNewCampaignDialogViewModel by lazy {
         ViewModelProvider(
             this,
-            AddNewCampainDialogViewModel.Factory(productName!!)
-        ).get(AddNewCampainDialogViewModel::class.java)
+            AddNewCampaignDialogViewModel.Factory(productName!!)
+        ).get(AddNewCampaignDialogViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            productName = it.getString(PRODUCT_NAME)
+            productName = it.getParcelable(PRODUCT_NAME)
         }
     }
 
@@ -87,10 +88,11 @@ class AddNewCampainDialog : BottomSheetDialogFragment() {
 
     companion object {
 
-        fun newInstance(productName: String): AddNewCampainDialog =
-            AddNewCampainDialog().apply {
+        fun newInstance(product: ProductModel): AddNewCampaignDialog =
+            AddNewCampaignDialog().apply {
                 arguments = Bundle().apply {
-                    putString(PRODUCT_NAME, productName)
+                    putParcelable(PRODUCT_NAME, product as Parcelable)
+
                 }
             }
 

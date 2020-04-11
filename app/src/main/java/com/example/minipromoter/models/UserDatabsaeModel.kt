@@ -1,9 +1,11 @@
 package com.example.minipromoter.models
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
 
 //
@@ -11,17 +13,19 @@ import androidx.room.PrimaryKey
 //
 
 @Entity(tableName = "products")
+@Parcelize
 data class ProductModel constructor(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    var productId: Int =0,
     val productName: String = "",
     val creatingTime: Long = System.currentTimeMillis()
-)
+) : Parcelable
 
 @Entity(
     tableName = "users",
     foreignKeys = [ForeignKey(
         entity = ProductModel::class,
-        parentColumns = arrayOf("productName"),
+        parentColumns = arrayOf("productId"),
         childColumns = arrayOf("productId"),
         onDelete = CASCADE
     )]
@@ -31,23 +35,23 @@ class UserModel(
     val id: Int = 0,
     val phoneNumber: String,
     val subscriptionDate: Long = System.currentTimeMillis(),
-    val productId: String
+    val productId: Int
 )
 
 @Entity(
-    tableName = "campains",
+    tableName = "campaigns",
     foreignKeys = [ForeignKey(
         entity = ProductModel::class,
-        parentColumns = arrayOf("productName"),
+        parentColumns = arrayOf("productId"),
         childColumns = arrayOf("productId"),
         onDelete = CASCADE
     )]
 )
-class Campain(
+class Campaign(
     @PrimaryKey(autoGenerate = true)
-    val campainId: Int = 0,
-    val campainName: String,
-    val campainMessage: String,
-    val campainCreationDate: Long = System.currentTimeMillis(),
-    val productId: String
+    val campaignId: Int = 0,
+    val campaignName: String,
+    val campaignMessage: String,
+    val campaignCreationDate: Long = System.currentTimeMillis(),
+    val productId: Int
 )

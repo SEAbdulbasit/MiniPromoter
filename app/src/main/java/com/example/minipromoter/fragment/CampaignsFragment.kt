@@ -1,31 +1,32 @@
 package com.example.minipromoter.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.minipromoter.adapter.CampainAdapter
 import com.example.minipromoter.adapter.CampainOnClickListener
 import com.example.minipromoter.databinding.FragmentCampainsBinding
-import com.example.minipromoter.viewmodels.CampainViewModel
+import com.example.minipromoter.viewmodels.CampaignViewModel
 import kotlinx.android.synthetic.main.fragment_campains.*
 
 /**
  * A simple [Fragment] subclass.
  */
-class CampainsFragment : Fragment() {
+class CampaignsFragment : Fragment() {
 
-    private val args: CampainsFragmentArgs by navArgs()
+    private val args: CampaignsFragmentArgs by navArgs()
 
-    private val viewModel: CampainViewModel by lazy {
+    private val viewModel: CampaignViewModel by lazy {
         ViewModelProvider(
             this,
-            CampainViewModel.Factory(args.productName)
-        ).get(CampainViewModel::class.java)
+            CampaignViewModel.Factory(args.productModel)
+        ).get(CampaignViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -40,11 +41,19 @@ class CampainsFragment : Fragment() {
 
         })
 
+        binding.rvCampains.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
+
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
         binding.fbAdd.setOnClickListener {
-            AddNewCampainDialog.newInstance(args.productName).show(childFragmentManager, "dialog")
+            AddNewCampaignDialog.newInstance(args.productModel).show(childFragmentManager, "dialog")
 
         }
 
@@ -53,9 +62,9 @@ class CampainsFragment : Fragment() {
         return binding.root
     }
 
-    fun observeVariables() {
-        viewModel.campainList.observe(viewLifecycleOwner, Observer {
-            if (!it.isEmpty()) {
+    private fun observeVariables() {
+        viewModel.campaignList.observe(viewLifecycleOwner, Observer {
+            if (it.isNotEmpty()) {
                 val adapter = rvCampains.adapter as CampainAdapter
                 adapter.submitList(it)
             }

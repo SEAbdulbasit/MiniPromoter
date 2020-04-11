@@ -9,30 +9,43 @@
         android:id="@+id/productsFragment"
         android:name="com.example.minipromoter.fragment.ProductsFragment"
         android:label="fragment_products"
-        tools:layout="@layout/fragment_products" >
+        tools:layout="@layout/fragment_products">
         <action
             android:id="@+id/action_productsFragment_to_userFragment"
             app:destination="@id/userFragment" />
         <action
             android:id="@+id/action_productsFragment_to_campainsFragment"
             app:destination="@id/campainsFragment" />
+        <action
+            android:id="@+id/action_productsFragment_to_productSubscribers"
+            app:destination="@id/productSubscribers" />
     </fragment>
     <fragment
         android:id="@+id/userFragment"
         android:name="com.example.minipromoter.fragment.UserFragment"
         android:label="fragment_user"
-        tools:layout="@layout/fragment_user" >
+        tools:layout="@layout/fragment_user">
         <argument
             android:name="prodName"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/productSubscribers"
+        android:name="com.example.minipromoter.fragment.ProductSubscribers"
+        android:label="fragment_subscriber"
+        tools:layout="@layout/product_subscribers_fragment">
+        <argument
+            android:name="productModel"
+            app:argType="com.example.minipromoter.models.ProductModel" />
+    </fragment>
     <fragment
         android:id="@+id/campainsFragment"
-        android:name="com.example.minipromoter.fragment.CampainsFragment"
+        android:name="com.example.minipromoter.fragment.CampaignsFragment"
         android:label="fragment_campains"
-        tools:layout="@layout/fragment_campains" >
+        tools:layout="@layout/fragment_campains">
         <argument
-            android:name="productName"
-            app:argType="string" />
+            android:name="productModel"
+            app:argType="com.example.minipromoter.models.ProductModel" />
     </fragment>
 </navigation>

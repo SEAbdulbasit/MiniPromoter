@@ -4,7 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.minipromoter.App
-import com.example.minipromoter.models.Campain
+import com.example.minipromoter.models.Campaign
+import com.example.minipromoter.models.ProductModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 // Created by Abdul Basit on 3/12/2020.
 //
 
-class AddNewCampainDialogViewModel(private val productName: String) : BaseViewModel() {
+class AddNewCampaignDialogViewModel(private val productModel: ProductModel) : BaseViewModel() {
 
     private var viewModelJob = Job()
     private var coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -33,26 +34,26 @@ class AddNewCampainDialogViewModel(private val productName: String) : BaseViewMo
     fun addNewCampain() {
         coroutineScope.launch(Dispatchers.IO) {
             val campain =
-                Campain(
-                    campainName = tittle.value!!,
-                    campainMessage = message.value!!,
-                    productId = productName
+                Campaign(
+                    campaignName = tittle.value!!,
+                    campaignMessage = message.value!!,
+                    productId = productModel.productId
                 )
-            App.getUserRepository().insertCampain(campain)
+            App.getUserRepository().insertCampaign(campain)
         }
     }
 
 
-        class Factory(private val prodcutName: String) :
-            ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                if (modelClass.isAssignableFrom(AddNewCampainDialogViewModel::class.java)) {
-                    @Suppress("UNCHECKED_CAST")
-                    return AddNewCampainDialogViewModel(prodcutName) as T
-                }
-                throw IllegalArgumentException("Unable to construct view model")
+    class Factory(private val productModel: ProductModel) :
+        ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(AddNewCampaignDialogViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return AddNewCampaignDialogViewModel(productModel) as T
             }
+            throw IllegalArgumentException("Unable to construct view model")
         }
+    }
 
 
 }

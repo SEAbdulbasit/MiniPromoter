@@ -15,10 +15,15 @@ class ProductSelectionAdapter(val onClickListener: OnClickListener) :
         DiffCallBack
     ) {
 
-    class ViewHolder(private var binding: ProductItemBinding) :
+    inner class ViewHolder(private var binding: ProductItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(client: ProductModel) {
             binding.model = client
+
+            binding.tvSubscribers.setOnClickListener {
+                onClickListener.onSubscribersClicked(client)
+            }
+
             binding.executePendingBindings()
         }
     }
@@ -58,6 +63,10 @@ class ProductSelectionAdapter(val onClickListener: OnClickListener) :
     }
 }
 
-class OnClickListener(val clickListener: (client: ProductModel) -> Unit) {
+class OnClickListener(
+    val clickListener: (client: ProductModel) -> Unit,
+    val subscriberListner: (client: ProductModel) -> Unit
+) {
     fun onClick(client: ProductModel) = clickListener(client)
+    fun onSubscribersClicked(client: ProductModel) = subscriberListner(client)
 }

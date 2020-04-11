@@ -7,14 +7,14 @@
 
         <variable
             name="viewModel"
-            type="com.example.minipromoter.viewmodels.CampainViewModel" />
+            type="com.example.minipromoter.viewmodels.CampaignViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragment.CampainsFragment">
+        tools:context=".fragment.CampaignsFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"

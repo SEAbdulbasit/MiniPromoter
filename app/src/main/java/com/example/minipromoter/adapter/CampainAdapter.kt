@@ -8,19 +8,28 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.minipromoter.R
 import com.example.minipromoter.databinding.CampainItemBinding
-import com.example.minipromoter.models.Campain
+import com.example.minipromoter.models.Campaign
+import java.text.DateFormat
+import java.util.*
 
 
-class CampainAdapter(val onClickListener: CampainOnClickListener) :
-    ListAdapter<Campain, CampainAdapter.ViewHolder>(
+class CampainAdapter(private val onClickListener: CampainOnClickListener) :
+    ListAdapter<Campaign, CampainAdapter.ViewHolder>(
         DiffCallBack
     ) {
 
     class ViewHolder(private var binding: CampainItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(client: Campain) {
+        fun bind(client: Campaign) {
+
             binding.model = client
+
+            val date = Date(client.campaignCreationDate)
+            val df = DateFormat.getDateTimeInstance()
+            binding.date.text = df.format(date)
+
             binding.executePendingBindings()
+
         }
     }
 
@@ -42,23 +51,23 @@ class CampainAdapter(val onClickListener: CampainOnClickListener) :
         holder.bind(client)
     }
 
-    companion object DiffCallBack : DiffUtil.ItemCallback<Campain>() {
+    companion object DiffCallBack : DiffUtil.ItemCallback<Campaign>() {
         override fun areItemsTheSame(
-            oldItem: Campain,
-            newItem: Campain
+            oldItem: Campaign,
+            newItem: Campaign
         ): Boolean {
             return oldItem === newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: Campain,
-            newItem: Campain
+            oldItem: Campaign,
+            newItem: Campaign
         ): Boolean {
-            return oldItem.campainId == newItem.campainId
+            return oldItem.campaignId == newItem.campaignId
         }
     }
 }
 
-class CampainOnClickListener(val clickListener: (client: Campain) -> Unit) {
-    fun onClick(client: Campain) = clickListener(client)
+class CampainOnClickListener(val clickListener: (client: Campaign) -> Unit) {
+    fun onClick(client: Campaign) = clickListener(client)
 }

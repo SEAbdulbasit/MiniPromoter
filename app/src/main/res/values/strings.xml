@@ -9,4 +9,7 @@
     <string name="add_campain">Add Campain</string>
     <string name="enter_campain_name">Please enter the campain name</string>
     <string name="enter_campain_message">Please  enter the campain message</string>
+    <string name="enter_product_name">Please  enter the product name</string>
+    <string name="add_product">Add product</string>
+    <string name="subscribers">Subscribers</string>
 </resources>

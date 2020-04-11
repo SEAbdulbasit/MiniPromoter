@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.minipromoter.viewmodels.AddNewCampaignDialogViewModel" />
+            type="com.example.minipromoter.viewmodels.AddNewProductDialogViewModel" />
 
     </data>
 
@@ -38,35 +38,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusedByDefault="false"
-                android:hint="@string/campain_name"
+                android:hint="@string/enter_product_name"
                 android:inputType="textEmailAddress"
                 android:singleLine="true"
                 android:text="@={viewModel.tittle}"
                 tools:ignore="UnusedAttribute" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tiMessage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/eight_dp"
-            android:layout_marginTop="@dimen/twenty_dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ilName">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etMessage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusedByDefault="false"
-                android:gravity="top"
-                android:hint="@string/campain_message"
-                android:imeOptions="actionDone"
-                android:lines="3"
-                android:text="@={viewModel.message}"
-                tools:ignore="UnusedAttribute" />
-
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,11 +53,10 @@
             android:layout_marginTop="@dimen/twenty_dp"
             android:onClick="@{v->viewModel.onAddClicked()}"
             android:padding="@dimen/ten_dp"
-            android:text="@string/add_campain"
+            android:text="@string/add_product"
             android:textColor="@color/colorPrimary"
-
             android:textSize="@dimen/eighteen_sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tiMessage" />
+            app:layout_constraintTop_toBottomOf="@+id/ilName" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

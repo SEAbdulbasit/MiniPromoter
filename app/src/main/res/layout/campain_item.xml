@@ -7,16 +7,15 @@
 
         <variable
             name="model"
-            type="com.example.minipromoter.models.Campain" />
+            type="com.example.minipromoter.models.Campaign" />
 
     </data>
 
     <androidx.cardview.widget.CardView
-        setCartBacgroundColor='@{"s"}'
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/ten_dp"
-        app:cardCornerRadius="5dp">
+        android:elevation="0dp"
+        app:cardCornerRadius="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -27,7 +26,7 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{model.campainName}"
+                android:text="@{model.campaignName}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/twenty_sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/five_dp"
-                android:text="@{model.campainMessage}"
+                android:text="@{model.campaignMessage}"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sixteen_sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -49,14 +48,14 @@
                 tools:text="Message , here goes the message" />
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/five_dp"
-                android:text="@{model.campainMessage}"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sixteen_sp"
+                android:textSize="@dimen/fourteen_sp"
                 app:layout_constraintTop_toBottomOf="@+id/materialTextView"
-                app:setCreationTime="@{model.campainCreationDate}"
+                app:setCreationTime="@{model.campaignCreationDate}"
                 tools:text="Message , here goes the message" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

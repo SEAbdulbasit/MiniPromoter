@@ -47,7 +47,8 @@ class IncomingSMS : BroadcastReceiver() {
                         it.productName.equals(messageParts[0])
                     }
                     if (product != null) {
-                        val userModel = UserModel(phoneNumber = from, productId = messageParts[1])
+                        val userModel =
+                            UserModel(phoneNumber = from, productId = product.productId)
                         userRepository.insertUser(userModel)
 
                     }
