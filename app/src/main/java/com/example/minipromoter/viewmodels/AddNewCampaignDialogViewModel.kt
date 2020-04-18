@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 // Created by Abdul Basit on 3/12/2020.
 //
 
-class AddNewCampaignDialogViewModel(private val productModel: ProductModel) : BaseViewModel() {
+class AddNewCampaignDialogViewModel(val productModel: ProductModel) : BaseViewModel() {
 
     private var viewModelJob = Job()
     private var coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -35,7 +35,7 @@ class AddNewCampaignDialogViewModel(private val productModel: ProductModel) : Ba
         coroutineScope.launch(Dispatchers.IO) {
             val campain =
                 Campaign(
-                    campaignName = tittle.value!!,
+                    campaignName = productModel.productName + ": " + tittle.value!!,
                     campaignMessage = message.value!!,
                     productId = productModel.productId
                 )

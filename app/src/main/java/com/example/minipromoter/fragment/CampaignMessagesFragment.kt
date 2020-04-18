@@ -55,8 +55,6 @@ class CampaignMessagesFragment : Fragment() {
 
         binding.fbAdd.setOnClickListener {
             viewModel.startSendingMessage()
-
-            findNavController().popBackStack()
         }
 
         return binding.root

@@ -7,7 +7,6 @@ import android.telephony.SmsMessage
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import com.example.minipromoter.Utils.MINI_PROMOTER
 import com.example.minipromoter.models.UserModel
 import com.example.minipromoter.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
@@ -40,7 +39,7 @@ class IncomingSMS : BroadcastReceiver() {
 
 
             runBlocking(Dispatchers.IO) {
-                if (smsBody.contains(MINI_PROMOTER)) {
+                try {
                     val userRepository = UserRepository()
                     val productList = userRepository.getProductsListWithOutLiveData()
                     val messageParts = smsBody.split("#")
@@ -52,14 +51,14 @@ class IncomingSMS : BroadcastReceiver() {
                             val userModel =
                                 UserModel(phoneNumber = from, productId = product.productId)
                             userRepository.insertUser(userModel)
-
                         }
                     }
-
+                    Toast.makeText(context, str, Toast.LENGTH_SHORT).show()
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-                //}
-                Toast.makeText(context, str, Toast.LENGTH_SHORT).show()
             }
+            //}
         }
     }
 }
