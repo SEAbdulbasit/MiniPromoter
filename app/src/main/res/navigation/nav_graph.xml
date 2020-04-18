@@ -47,5 +47,17 @@
         <argument
             android:name="productModel"
             app:argType="com.example.minipromoter.models.ProductModel" />
+        <action
+            android:id="@+id/action_campainsFragment_to_campainMessagesFragment"
+            app:destination="@id/campainMessagesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/campainMessagesFragment"
+        android:name="com.example.minipromoter.fragment.CampaignMessagesFragment"
+        android:label="fragment_campain_messages"
+        tools:layout="@layout/fragment_campain_messages" >
+        <argument
+            android:name="model"
+            app:argType="com.example.minipromoter.models.Campaign" />
     </fragment>
 </navigation>

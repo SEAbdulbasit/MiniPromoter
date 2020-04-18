@@ -21,7 +21,7 @@ fun getRandomColorCode(): Int {
 
 @BindingAdapter("setCreationTime")
 fun com.google.android.material.textview.MaterialTextView.setCreationDate(timeInMilliSec: Long) {
-    text = com.example.minipromoter.Utils.timeConverted(timeInMilliSec)
+    text = timeConverted(timeInMilliSec)
 
 
 }

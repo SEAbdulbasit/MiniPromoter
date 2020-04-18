@@ -31,34 +31,6 @@ class App : Application() {
                         App()
             }
             return instance!!
-
-
-            /*     }
-
-
-                 private var moshi: Moshi? = null
-                 fun getMoshi(): Moshi {
-                     synchronized(App::class.java) {
-                         if (moshi == null)
-                             moshi = Moshi.Builder().build()
-                     }
-                     return moshi!!
-
-                 }
-
-
-
-                 private var responseHandler: app.px.packagex.services.network.ResponseHandler? = null
-                 fun getResponseHandler(): app.px.packagex.services.network.ResponseHandler {
-                     synchronized(App::class.java) {
-                         if (responseHandler == null)
-                             responseHandler = app.px.packagex.services.network.ResponseHandler()
-                     }
-                     return responseHandler!!
-
-                 }*/
-
-
         }
 
         private var userRepository: UserRepository? = null
@@ -70,7 +42,5 @@ class App : Application() {
             return userRepository!!
 
         }
-
-
     }
 }

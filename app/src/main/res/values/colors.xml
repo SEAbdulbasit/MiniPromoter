@@ -6,4 +6,5 @@
     <color name="black">#000000</color>
     <color name="dim_black">#B9000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="silver">#41858585</color>
 </resources>

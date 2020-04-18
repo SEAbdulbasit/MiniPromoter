@@ -7,6 +7,7 @@ import android.telephony.SmsMessage
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import com.example.minipromoter.Utils.MINI_PROMOTER
 import com.example.minipromoter.models.UserModel
 import com.example.minipromoter.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
@@ -39,24 +40,26 @@ class IncomingSMS : BroadcastReceiver() {
 
 
             runBlocking(Dispatchers.IO) {
-                val userRepository = UserRepository()
-                val productList = userRepository.getProductsListWithOutLiveData()
-                val messageParts = smsBody.split("#")
-                if (messageParts[1] != null) {
-                    val product = productList.findLast {
-                        it.productName.equals(messageParts[0])
-                    }
-                    if (product != null) {
-                        val userModel =
-                            UserModel(phoneNumber = from, productId = product.productId)
-                        userRepository.insertUser(userModel)
+                if (smsBody.contains(MINI_PROMOTER)) {
+                    val userRepository = UserRepository()
+                    val productList = userRepository.getProductsListWithOutLiveData()
+                    val messageParts = smsBody.split("#")
+                    if (messageParts[1] != null) {
+                        val product = productList.findLast {
+                            it.productName.equals(messageParts[1])
+                        }
+                        if (product != null) {
+                            val userModel =
+                                UserModel(phoneNumber = from, productId = product.productId)
+                            userRepository.insertUser(userModel)
 
+                        }
                     }
+
                 }
-
+                //}
+                Toast.makeText(context, str, Toast.LENGTH_SHORT).show()
             }
-            //}
-            Toast.makeText(context, str, Toast.LENGTH_SHORT).show()
         }
     }
 }

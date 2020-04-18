@@ -16,7 +16,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class ProductModel constructor(
     @PrimaryKey(autoGenerate = true)
-    var productId: Int =0,
+    var productId: Int = 0,
     val productName: String = "",
     val creatingTime: Long = System.currentTimeMillis()
 ) : Parcelable
@@ -47,6 +47,7 @@ class UserModel(
         onDelete = CASCADE
     )]
 )
+@Parcelize
 class Campaign(
     @PrimaryKey(autoGenerate = true)
     val campaignId: Int = 0,
@@ -54,4 +55,21 @@ class Campaign(
     val campaignMessage: String,
     val campaignCreationDate: Long = System.currentTimeMillis(),
     val productId: Int
+) : Parcelable
+
+@Entity(
+    tableName = "campaign_messages",
+    foreignKeys = [ForeignKey(
+        entity = Campaign::class,
+        parentColumns = arrayOf("campaignId"),
+        childColumns = arrayOf("campaignId"),
+        onDelete = CASCADE
+    )]
+)
+class CampaignMessages(
+    @PrimaryKey(autoGenerate = true)
+    val campaignMessageId: Int = 0,
+    val campaignMessage: String = "",
+    val campaignMessageCreationDate: Long = System.currentTimeMillis(),
+    val campaignId: Int
 )

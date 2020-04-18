@@ -10,10 +10,10 @@ import com.example.minipromoter.models.ToolbarModel
 // Copyright (c) 2020 VisionX. All rights reserved.
 //
 
-class UserViewModel(private val prodcutName: String) : BaseViewModel() {
+class UserViewModel(private val productName: String) : BaseViewModel() {
 
-    val userList = App.getUserRepository().getProductUsersList("Product $prodcutName")
-    val toolbarModel = ToolbarModel(prodcutName)
+   // val userList = App.getUserRepository().getProductUsersList()
+    val toolbarModel = ToolbarModel(productName)
 
 
     class Factory(private val prodcutName: String) :

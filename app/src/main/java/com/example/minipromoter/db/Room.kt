@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.minipromoter.models.Campaign
+import com.example.minipromoter.models.CampaignMessages
 import com.example.minipromoter.models.ProductModel
 import com.example.minipromoter.models.UserModel
 
@@ -21,9 +22,10 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE id LIKE :value LIMIT 1")
     fun getSingleUser(value: String): LiveData<UserModel>
 
-    @Query("SELECT * FROM users WHERE productId LIKE :value")
-    fun getProductUser(value: String): LiveData<List<UserModel>>
+    @Query("SELECT * FROM users WHERE productId = :value")
+    fun getProductUser(value: Int): LiveData<List<UserModel>>
 }
+
 
 @Dao
 interface ProductDao {
@@ -41,26 +43,45 @@ interface ProductDao {
 
 }
 
+
 @Dao
-interface CampainDao {
+interface CampaignDao {
     @Query("SELECT * FROM campaigns")
-    fun getAllCamapins(): LiveData<List<Campaign>>
+    fun getAllCampaigns(): LiveData<List<Campaign>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllCampains(vararg users: Campaign)
+    fun insertAllCampaigns(vararg users: Campaign)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCampain(campain: Campaign)
+    fun insertCampaign(campaign: Campaign)
 
     @Query("SELECT * FROM campaigns WHERE productId LIKE :value")
-    fun getProductCamapains(value: Int): LiveData<List<Campaign>>
+    fun getProductCampaigns(value: Int): LiveData<List<Campaign>>
 }
 
-@Database(entities = [UserModel::class, ProductModel::class, Campaign::class], version = 1)
+
+@Dao
+interface CampaignMessageDao {
+    @Query("SELECT * FROM campaign_messages WHERE campaignId LIKE :value")
+    fun getAllCampaignMessages(value: Int): LiveData<List<CampaignMessages>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCampaignMessage(campaignMessages: CampaignMessages)
+
+    @Query("SELECT * FROM campaign_messages WHERE campaignMessageId LIKE :value")
+    fun getCampaignMessage(value: Int): LiveData<List<CampaignMessages>>
+}
+
+
+@Database(
+    entities = [UserModel::class, ProductModel::class, Campaign::class, CampaignMessages::class],
+    version = 1
+)
 abstract class UserDatabase : RoomDatabase() {
     abstract val userDao: UserDao
     abstract val productDao: ProductDao
-    abstract val campainDao: CampainDao
+    abstract val campaignDao: CampaignDao
+    abstract val campaignMessageDao: CampaignMessageDao
 }
 
 private lateinit var INSTANCE: UserDatabase

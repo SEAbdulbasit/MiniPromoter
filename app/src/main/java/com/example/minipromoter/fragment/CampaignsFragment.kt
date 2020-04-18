@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.minipromoter.adapter.CampainAdapter
@@ -38,6 +39,11 @@ class CampaignsFragment : Fragment() {
         val binding = FragmentCampainsBinding.inflate(inflater)
 
         binding.rvCampains.adapter = CampainAdapter(CampainOnClickListener {
+            findNavController().navigate(
+                CampaignsFragmentDirections.actionCampainsFragmentToCampainMessagesFragment(
+                    it
+                )
+            )
 
         })
 
@@ -47,7 +53,6 @@ class CampaignsFragment : Fragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
-
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -61,6 +66,7 @@ class CampaignsFragment : Fragment() {
 
         return binding.root
     }
+
 
     private fun observeVariables() {
         viewModel.campaignList.observe(viewLifecycleOwner, Observer {

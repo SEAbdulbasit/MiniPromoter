@@ -42,12 +42,12 @@ class UserFragment : Fragment() {
 
         binding.rvUsers.adapter = adapter
 
-        viewModel.userList.observe(viewLifecycleOwner, Observer {
+       /* viewModel.userList.observe(viewLifecycleOwner, Observer {
             Log.d("UserFragment", "List size : " + it.size)
             if (it.isNotEmpty()) {
                 adapter.submitList(it)
             }
-        })
+        })*/
 
         return binding.root
     }

@@ -51,7 +51,6 @@ class ProductsFragment : Fragment() {
 
         }))
 
-
         binding.rvProduct.addItemDecoration(
             DividerItemDecoration(
                 context,
@@ -66,7 +65,6 @@ class ProductsFragment : Fragment() {
             }
         })
 
-
         binding.fbAdd.setOnClickListener {
             showAddNewProductFragment()
         }
@@ -76,7 +74,6 @@ class ProductsFragment : Fragment() {
 
 
     private fun showAddNewProductFragment() {
-
         AddNewProductDialog.newInstance().show(childFragmentManager, "dialog")
 
     }
