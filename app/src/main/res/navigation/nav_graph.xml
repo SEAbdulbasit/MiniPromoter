@@ -38,6 +38,9 @@
         <argument
             android:name="productModel"
             app:argType="com.example.minipromoter.models.ProductModel" />
+        <action
+            android:id="@+id/action_productSubscribers_to_chatsFragment"
+            app:destination="@id/chatsFragment" />
     </fragment>
     <fragment
         android:id="@+id/campainsFragment"
@@ -55,9 +58,18 @@
         android:id="@+id/campainMessagesFragment"
         android:name="com.example.minipromoter.fragment.CampaignMessagesFragment"
         android:label="fragment_campain_messages"
-        tools:layout="@layout/fragment_campain_messages" >
+        tools:layout="@layout/fragment_campain_messages">
         <argument
             android:name="model"
             app:argType="com.example.minipromoter.models.Campaign" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatsFragment"
+        android:name="com.example.minipromoter.fragment.ChatsFragment"
+        android:label="fragment_chats"
+        tools:layout="@layout/fragment_chats" >
+        <argument
+            android:name="userModel"
+            app:argType="com.example.minipromoter.models.UserModel" />
     </fragment>
 </navigation>

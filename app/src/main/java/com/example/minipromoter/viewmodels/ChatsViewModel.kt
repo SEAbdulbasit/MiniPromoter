@@ -4,46 +4,45 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.minipromoter.App
-import com.example.minipromoter.Utils.Event
 import com.example.minipromoter.models.ProductModel
+import com.example.minipromoter.models.UserMessage
+import com.example.minipromoter.models.UserModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-//
-// Created by Abdul Basit on 3/12/2020.
-//
-
-class AddNewProductDialogViewModel : BaseViewModel() {
+class ChatsViewModel(private val userModel: UserModel) : ViewModel() {
 
     private var viewModelJob = Job()
     private var coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    val tittle = MutableLiveData("")
-    val onButtonClicked = MutableLiveData<Event<Unit>>()
 
-    fun onAddClicked() {
-        onButtonClicked.value = Event(Unit)
-    }
+    val userMessages =
+        App.getUserRepository().database.userMessageDao.getAllUserMessages(userModel.userId)
+    val message = MutableLiveData("")
 
-    fun addNewProduct() {
+
+    fun addUserMessage() {
         coroutineScope.launch(Dispatchers.IO) {
-            val productModel = ProductModel(productName = tittle.value!!)
-            App.getUserRepository().database.productDao.insertProduct(productModel)
+            val userMessage = UserMessage(
+                userId = userModel.userId,
+                message = message.value,
+                isIncomingMessage = false
+            )
+            App.getUserRepository().database.userMessageDao.insertUserMessage(userMessage)
         }
     }
 
-    class Factory() :
+
+    class Factory(val userModel: UserModel) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(AddNewProductDialogViewModel::class.java)) {
+            if (modelClass.isAssignableFrom(ChatsViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return AddNewProductDialogViewModel() as T
+                return ChatsViewModel(userModel) as T
             }
             throw IllegalArgumentException("Unable to construct view model")
         }
     }
-
-
 }

@@ -3,10 +3,7 @@ package com.example.minipromoter.repository
 import androidx.lifecycle.LiveData
 import com.example.minipromoter.App
 import com.example.minipromoter.db.getDatabase
-import com.example.minipromoter.models.Campaign
-import com.example.minipromoter.models.CampaignMessages
-import com.example.minipromoter.models.ProductModel
-import com.example.minipromoter.models.UserModel
+import com.example.minipromoter.models.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -15,7 +12,8 @@ import kotlinx.coroutines.withContext
 //
 
 class UserRepository {
-    private val database = getDatabase(App.getInstance())
+    val database = getDatabase(App.getInstance())
+/*
 
 
     fun getProductsList(): LiveData<List<ProductModel>> {
@@ -26,20 +24,41 @@ class UserRepository {
         return database.productDao.getAllProductsWithOutLiveData()
     }
 
-    fun getProductUsersList(productId: Int): LiveData<List<UserModel>> {
-        return database.userDao.getProductUser(productId)
+    fun getSingleUserWithOutLiveData(userID: String): UserModel {
+        return database.userDao.getSingleUserWithOutLiveData(userID)
     }
 
-    fun getAllCampaignMessages(campaignId: Int): LiveData<List<CampaignMessages>> {
+    fun searchForProductPhoneNumber(phoneNumber: String): ProductModel {
+        return database.productDao.searchForProduct(phoneNumber)
+    }
+
+
+    fun findUserByPhoneNumber(phoneNumber: String): UserModel {
+        return database.userDao.findUser(phoneNumber)
+    }
+
+    */
+/*  fun getProductUsersList(productId: Int): LiveData<List<UserModel>> {
+          return database.userDao.getProductUser(productId)
+      }*//*
+
+
+    fun getAllCampaignMessages(campaignId: Long): LiveData<List<CampaignMessages>> {
         return database.campaignMessageDao.getAllCampaignMessages(campaignId)
     }
 
-    fun getProductSubscribers(productId: Int): LiveData<List<UserModel>> {
+    */
+/*fun getProductSubscribers(productId: Int): LiveData<List<UserModel>> {
         return database.userDao.getProductUser(productId)
+    }*//*
+
+
+    fun getProductCampaigns(productId: Long): LiveData<List<Campaign>> {
+        return database.campaignDao.getProductCampaigns(productId)
     }
 
-    fun getProductCampaigns(productId: Int): LiveData<List<Campaign>> {
-        return database.campaignDao.getProductCampaigns(productId)
+    fun getProductSubscribers(productId: Long): LiveData<List<UserModel>> {
+        return database.productSubscribersDao.getProductSubscribers(productId)
     }
 
 
@@ -62,9 +81,16 @@ class UserRepository {
         }
     }
 
-    suspend fun insertUser(userModel: UserModel) {
+    suspend fun insertProductSubscribers(productSubscriberes: ProductSubscribers) {
         withContext(Dispatchers.IO) {
-            database.userDao.insertUser(userModel)
+            database.productSubscribersDao.insert(productSubscriberes)
         }
     }
+*/
+/*
+    suspend fun insertUser(userModel: UserModel): Long {
+        return withContext(Dispatchers.IO) {
+            return@withContext database.userDao.insertUser(userModel)
+        }
+    }*/
 }

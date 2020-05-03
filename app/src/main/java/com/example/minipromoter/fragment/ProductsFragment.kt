@@ -9,11 +9,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.minipromoter.adapter.OnClickListener
 import com.example.minipromoter.adapter.ProductSelectionAdapter
 import com.example.minipromoter.databinding.FragmentProductsBinding
-import com.example.minipromoter.models.ProductModel
+import com.example.minipromoter.dialogs.AddNewProductDialog
 import com.example.minipromoter.viewmodels.FragmentProductViewModel
 
 class ProductsFragment : Fragment() {

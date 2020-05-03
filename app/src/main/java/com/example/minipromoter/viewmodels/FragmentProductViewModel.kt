@@ -1,5 +1,6 @@
 package com.example.minipromoter.viewmodels
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.minipromoter.App
@@ -12,7 +13,8 @@ import com.example.minipromoter.App
 class FragmentProductViewModel :
     BaseViewModel() {
 
-    val product = App.getUserRepository().getProductsList()
+    val product = App.getUserRepository().database.productDao.getAllProducts()
+    val toolbarTittle = MutableLiveData("Products")
 
 
     class Factory :

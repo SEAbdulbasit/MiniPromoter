@@ -5,8 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.telephony.SmsMessage
 import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.Observer
+import com.example.minipromoter.App
+import com.example.minipromoter.fragment.ProductSubscribers
+import com.example.minipromoter.models.SubscribersProductsCrossRef
+import com.example.minipromoter.models.UserMessage
 import com.example.minipromoter.models.UserModel
 import com.example.minipromoter.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
@@ -33,32 +35,57 @@ class IncomingSMS : BroadcastReceiver() {
                 str += "\n"
                 from = oneSMS.originatingAddress!!
                 smsBody = oneSMS.messageBody.toString()
-
             }
-
-
-
             runBlocking(Dispatchers.IO) {
-                try {
-                    val userRepository = UserRepository()
-                    val productList = userRepository.getProductsListWithOutLiveData()
-                    val messageParts = smsBody.split("#")
-                    if (messageParts[1] != null) {
-                        val product = productList.findLast {
-                            it.productName.equals(messageParts[1])
-                        }
-                        if (product != null) {
-                            val userModel =
-                                UserModel(phoneNumber = from, productId = product.productId)
-                            userRepository.insertUser(userModel)
-                        }
-                    }
-                    Toast.makeText(context, str, Toast.LENGTH_SHORT).show()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+                processTheMessage(from, smsBody)
             }
-            //}
+        }
+    }
+
+
+    suspend fun processTheMessage(sender: String, message: String) {
+        try {
+            val userRepository = UserRepository()
+            val keyword = userRepository.database.keywordsDao.getKeywordByMessage(message)
+
+            if (keyword != null) {
+
+                val userModel = userRepository.database.userDao.findUserByPhoneNumber(sender)
+                val campaignModel =
+                    userRepository.database.campaignDao.getCampaignById(keyword.campaignId)
+                val productModel =
+                    userRepository.database.productDao.getProductById(campaignModel.productId)
+
+                var userid: Long?
+                if (userModel == null) {
+                    userid =
+                        userRepository.database.userDao.insertUser(UserModel(phoneNumber = sender))
+                } else {
+                    userid = userModel.userId
+                }
+
+                val productSubscribers =
+                    userRepository.database.productSubscribersDao.getProductAndUserSubscriber(
+                        userid,
+                        productModel.productId
+                    )
+                if (productSubscribers == null) {
+                    val productSubscribers2 =
+                        SubscribersProductsCrossRef(
+                            userId = userid,
+                            productId = productModel.productId
+                        )
+                    userRepository.database.productSubscribersDao.insert(productSubscribers2)
+                }
+
+                val userMessage =
+                    UserMessage(userId = userid, message = message, isIncomingMessage = true)
+                userRepository.database.userMessageDao.insertUserMessage(userMessage)
+
+
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }

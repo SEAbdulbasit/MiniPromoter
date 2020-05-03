@@ -8,29 +8,28 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.minipromoter.R
 import com.example.minipromoter.databinding.CampaignMessageItemBinding
-import com.example.minipromoter.models.CampaignMessages
+import com.example.minipromoter.databinding.KeywordItemBinding
+import com.example.minipromoter.models.Keywords
 
 
-class CampaignMessagesAdapter(private val onClickListener: CampaignMessageOnClickListener) :
-    ListAdapter<CampaignMessages, CampaignMessagesAdapter.ViewHolder>(
+class KeywordsAdapter(private val onClickListener: KeywordsClickListner) :
+    ListAdapter<Keywords, KeywordsAdapter.ViewHolder>(
         DiffCallBack
     ) {
 
-    class ViewHolder(private var binding: CampaignMessageItemBinding) :
+    class ViewHolder(private var binding: KeywordItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(client: CampaignMessages) {
-
-            binding.model = client
-
+        fun bind(model: Keywords) {
+            binding.model = model
             binding.executePendingBindings()
 
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = DataBindingUtil.inflate<CampaignMessageItemBinding>(
+        val binding = DataBindingUtil.inflate<KeywordItemBinding>(
             LayoutInflater.from(parent.context),
-            R.layout.campaign_message_item,
+            R.layout.keyword_item,
             parent,
             false
         )
@@ -45,23 +44,23 @@ class CampaignMessagesAdapter(private val onClickListener: CampaignMessageOnClic
         holder.bind(client)
     }
 
-    companion object DiffCallBack : DiffUtil.ItemCallback<CampaignMessages>() {
+    companion object DiffCallBack : DiffUtil.ItemCallback<Keywords>() {
         override fun areItemsTheSame(
-            oldItem: CampaignMessages,
-            newItem: CampaignMessages
+            oldItem: Keywords,
+            newItem: Keywords
         ): Boolean {
             return oldItem === newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: CampaignMessages,
-            newItem: CampaignMessages
+            oldItem: Keywords,
+            newItem: Keywords
         ): Boolean {
             return oldItem.campaignId == newItem.campaignId
         }
     }
 }
 
-class CampaignMessageOnClickListener(val clickListener: (client: CampaignMessages) -> Unit) {
-    fun onClick(client: CampaignMessages) = clickListener(client)
+class KeywordsClickListner(val clickListener: (model: Keywords) -> Unit) {
+    fun onClick(client: Keywords) = clickListener(client)
 }

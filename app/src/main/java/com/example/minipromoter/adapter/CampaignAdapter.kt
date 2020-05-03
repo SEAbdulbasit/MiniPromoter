@@ -13,18 +13,18 @@ import java.text.DateFormat
 import java.util.*
 
 
-class CampainAdapter(private val onClickListener: CampainOnClickListener) :
-    ListAdapter<Campaign, CampainAdapter.ViewHolder>(
+class CampaignAdapter(private val onClickListener: CampainOnClickListener) :
+    ListAdapter<Campaign, CampaignAdapter.ViewHolder>(
         DiffCallBack
     ) {
 
     class ViewHolder(private var binding: CampainItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(client: Campaign) {
+        fun bind(model: Campaign) {
 
-            binding.model = client
+            binding.model = model
 
-            val date = Date(client.campaignCreationDate)
+            val date = Date(model.createdOn)
             val df = DateFormat.getDateTimeInstance()
             binding.date.text = df.format(date)
 

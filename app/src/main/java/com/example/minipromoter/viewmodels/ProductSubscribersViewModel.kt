@@ -7,7 +7,8 @@ import com.example.minipromoter.models.ProductModel
 
 class ProductSubscribersViewModel(productModel: ProductModel) : ViewModel() {
 
-    val userList = App.getUserRepository().getProductUsersList(productModel.productId)
+    val userList =
+        App.getUserRepository().database.productSubscribersDao.getProductSubscribers(productModel.productId)
 
 
     class Factory(val productModel: ProductModel) :

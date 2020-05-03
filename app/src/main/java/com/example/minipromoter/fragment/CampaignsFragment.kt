@@ -10,9 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.example.minipromoter.adapter.CampainAdapter
+import com.example.minipromoter.adapter.CampaignAdapter
 import com.example.minipromoter.adapter.CampainOnClickListener
 import com.example.minipromoter.databinding.FragmentCampainsBinding
+import com.example.minipromoter.dialogs.AddNewCampaignDialog
 import com.example.minipromoter.viewmodels.CampaignViewModel
 import kotlinx.android.synthetic.main.fragment_campains.*
 
@@ -34,17 +35,15 @@ class CampaignsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
 
         val binding = FragmentCampainsBinding.inflate(inflater)
 
-        binding.rvCampains.adapter = CampainAdapter(CampainOnClickListener {
+        binding.rvCampains.adapter = CampaignAdapter(CampainOnClickListener {
             findNavController().navigate(
                 CampaignsFragmentDirections.actionCampainsFragmentToCampainMessagesFragment(
                     it
                 )
             )
-
         })
 
         binding.rvCampains.addItemDecoration(
@@ -67,11 +66,10 @@ class CampaignsFragment : Fragment() {
         return binding.root
     }
 
-
     private fun observeVariables() {
         viewModel.campaignList.observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
-                val adapter = rvCampains.adapter as CampainAdapter
+                val adapter = rvCampains.adapter as CampaignAdapter
                 adapter.submitList(it)
             }
         })

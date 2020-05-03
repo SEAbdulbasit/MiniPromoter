@@ -1,5 +1,6 @@
 package com.example.minipromoter.viewmodels
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.minipromoter.App
@@ -12,7 +13,9 @@ import com.example.minipromoter.models.ProductModel
 class CampaignViewModel(productModel: ProductModel) : BaseViewModel() {
 
 
-    val campaignList = App.getUserRepository().getProductCampaigns(productModel.productId)
+    val campaignList =
+        App.getUserRepository().database.campaignDao.getProductsCampaigns(productModel.productId)
+    val toolbarTittle = MutableLiveData("Campaigns")
 
 
     class Factory(private val prodcutName: ProductModel) :

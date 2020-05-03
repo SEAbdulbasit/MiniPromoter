@@ -2,25 +2,26 @@ package com.example.minipromoter.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.marginStart
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.minipromoter.R
-import com.example.minipromoter.databinding.CampaignMessageItemBinding
-import com.example.minipromoter.models.CampaignMessages
+import com.example.minipromoter.databinding.UserMessageItemBinding
+import com.example.minipromoter.models.UserMessage
 
-
-class CampaignMessagesAdapter(private val onClickListener: CampaignMessageOnClickListener) :
-    ListAdapter<CampaignMessages, CampaignMessagesAdapter.ViewHolder>(
+class UserMessagesAdapter(private val onClickListener: UserMessageOnClickListener) :
+    ListAdapter<UserMessage, UserMessagesAdapter.ViewHolder>(
         DiffCallBack
     ) {
 
-    class ViewHolder(private var binding: CampaignMessageItemBinding) :
+    class ViewHolder(private var binding: UserMessageItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(client: CampaignMessages) {
+        fun bind(client: UserMessage) {
 
             binding.model = client
+
 
             binding.executePendingBindings()
 
@@ -28,9 +29,9 @@ class CampaignMessagesAdapter(private val onClickListener: CampaignMessageOnClic
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = DataBindingUtil.inflate<CampaignMessageItemBinding>(
+        val binding = DataBindingUtil.inflate<UserMessageItemBinding>(
             LayoutInflater.from(parent.context),
-            R.layout.campaign_message_item,
+            R.layout.user_message_item,
             parent,
             false
         )
@@ -45,23 +46,23 @@ class CampaignMessagesAdapter(private val onClickListener: CampaignMessageOnClic
         holder.bind(client)
     }
 
-    companion object DiffCallBack : DiffUtil.ItemCallback<CampaignMessages>() {
+    companion object DiffCallBack : DiffUtil.ItemCallback<UserMessage>() {
         override fun areItemsTheSame(
-            oldItem: CampaignMessages,
-            newItem: CampaignMessages
+            oldItem: UserMessage,
+            newItem: UserMessage
         ): Boolean {
             return oldItem === newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: CampaignMessages,
-            newItem: CampaignMessages
+            oldItem: UserMessage,
+            newItem: UserMessage
         ): Boolean {
-            return oldItem.campaignId == newItem.campaignId
+            return oldItem.messageId == newItem.messageId
         }
     }
 }
 
-class CampaignMessageOnClickListener(val clickListener: (client: CampaignMessages) -> Unit) {
-    fun onClick(client: CampaignMessages) = clickListener(client)
+class UserMessageOnClickListener(val clickListener: (client: UserMessage) -> Unit) {
+    fun onClick(client: UserMessage) = clickListener(client)
 }

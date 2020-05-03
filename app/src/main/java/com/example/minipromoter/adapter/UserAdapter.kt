@@ -55,7 +55,7 @@ class UserAdapter(val onClickListener: UserOnClickListener) :
             oldItem: UserModel,
             newItem: UserModel
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.userId == newItem.userId
         }
     }
 }

@@ -3,10 +3,8 @@ package com.example.minipromoter.db
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.minipromoter.models.Campaign
-import com.example.minipromoter.models.CampaignMessages
-import com.example.minipromoter.models.ProductModel
-import com.example.minipromoter.models.UserModel
+import com.example.minipromoter.fragment.ProductSubscribers
+import com.example.minipromoter.models.*
 
 @Dao
 interface UserDao {
@@ -17,15 +15,14 @@ interface UserDao {
     fun insertAll(vararg users: UserModel)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertUser(user: UserModel)
+    fun insertUser(user: UserModel): Long
 
-    @Query("SELECT * FROM users WHERE id LIKE :value LIMIT 1")
-    fun getSingleUser(value: String): LiveData<UserModel>
+    @Query("SELECT * FROM users WHERE userId LIKE :value LIMIT 1")
+    fun getSingleUserWithOutLiveData(value: String): UserModel
 
-    @Query("SELECT * FROM users WHERE productId = :value")
-    fun getProductUser(value: Int): LiveData<List<UserModel>>
+    @Query("SELECT * FROM users WHERE phoneNumber LIKE :value LIMIT 1")
+    fun findUserByPhoneNumber(value: String): UserModel
 }
-
 
 @Dao
 interface ProductDao {
@@ -35,53 +32,135 @@ interface ProductDao {
     @Query("SELECT * FROM products")
     fun getAllProductsWithOutLiveData(): List<ProductModel>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllProduct(vararg users: ProductModel)
+    @Query("SELECT * FROM products WHERE productName LIKE :value LIMIT 1")
+    fun searchForProduct(value: String): ProductModel
+
+    @Query("SELECT * FROM products WHERE productId=:value LIMIT 1")
+    fun getProductById(value: Long): ProductModel
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertProduct(user: ProductModel): Long
-
+    fun insertProduct(vararg users: ProductModel)
 }
-
 
 @Dao
 interface CampaignDao {
-    @Query("SELECT * FROM campaigns")
+    @Query("SELECT * FROM campaigns_table")
     fun getAllCampaigns(): LiveData<List<Campaign>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllCampaigns(vararg users: Campaign)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCampaign(campaign: Campaign)
+    fun insertCampaign(campaign: Campaign): Long
 
-    @Query("SELECT * FROM campaigns WHERE productId LIKE :value")
-    fun getProductCampaigns(value: Int): LiveData<List<Campaign>>
+    @Transaction
+    @Query("SELECT * FROM campaigns_table WHERE productId=:value")
+    fun getProductsCampaigns(value: Long): LiveData<List<Campaign>>
+
+    @Query("SELECT * FROM campaigns_table WHERE campaignId=:value LIMIT 1")
+    fun getCampaignById(value: Long): Campaign
 }
+
+@Dao
+interface KeywordsDao {
+    @Query("SELECT * FROM keywords_table")
+    fun getAllKeywords(): LiveData<List<Keywords>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertKeywords(vararg keywords: Keywords)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertKeywords(campaign: Keywords): Long
+
+    @Query("SELECT * FROM keywords_table WHERE campaignId=:value")
+    fun getCampaignKeywords(value: Long): LiveData<List<Keywords>>
+
+    @Query("SELECT * FROM keywords_table WHERE description LIKE :value LIMIT 1")
+    fun getKeywordByMessage(value: String): Keywords
+}
+
+@Dao
+interface CampaignMessageDao {
+    @Query("SELECT * FROM campaign_messages")
+    fun getAllCampaignMessages(): LiveData<List<CampaignMessages>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCampaignMessage(vararg campaignMessage: CampaignMessages)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertCampaignMessage(campaign: CampaignMessages): Long
+
+    @Transaction
+    @Query("SELECT * FROM campaign_messages WHERE messageId=:value")
+    fun getCampaignMessage(value: Long): LiveData<List<CampaignMessages>>
+}
+
+@Dao
+interface UserMessageDao {
+    @Query("SELECT * FROM user_message")
+    fun getAllMessages(): LiveData<List<UserMessage>>
+
+    @Query("SELECT * FROM user_message where messageId=:value")
+    fun getUserLastMessage(value: Long): UserMessage
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertUserMessage(vararg userMessage: UserMessage)
+
+    @Update
+    fun updateUserMessage(userMessage: UserMessage)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertUserMessage(campaign: UserMessage): Long
+
+    @Transaction
+    @Query("SELECT * FROM user_message WHERE userId=:value")
+    fun getAllUserMessages(value: Long): LiveData<List<UserMessage>>
+}
+
+
+@Dao
+interface ProductSubscribersDao {
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    fun insert(userRepoJoin: SubscribersProductsCrossRef)
+
+    @Query("SELECT * FROM users INNER JOIN subscribers_products_table ON productId=subscribers_products_table.productId WHERE subscribers_products_table.productId=:productId")
+    fun getProductSubscribers(productId: Long): LiveData<List<UserModel>>
+
+    @Query("SELECT * FROM subscribers_products_table where productId LIKE :productId AND userId LIKE :userId ")
+    fun getProductAndUserSubscriber(productId: Long, userId: Long): SubscribersProductsCrossRef
+}
+
+
+/*
 
 
 @Dao
 interface CampaignMessageDao {
     @Query("SELECT * FROM campaign_messages WHERE campaignId LIKE :value")
-    fun getAllCampaignMessages(value: Int): LiveData<List<CampaignMessages>>
+    fun getAllCampaignMessages(value: Long): LiveData<List<CampaignMessages>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCampaignMessage(campaignMessages: CampaignMessages)
 
     @Query("SELECT * FROM campaign_messages WHERE campaignMessageId LIKE :value")
-    fun getCampaignMessage(value: Int): LiveData<List<CampaignMessages>>
+    fun getCampaignMessage(value: Long): LiveData<List<CampaignMessages>>
 }
 
+*/
 
 @Database(
-    entities = [UserModel::class, ProductModel::class, Campaign::class, CampaignMessages::class],
-    version = 1
+    entities = [UserModel::class, ProductModel::class, Campaign::class, Keywords::class, SubscribersProductsCrossRef::class, UserMessage::class, CampaignMessages::class],
+    version = 1,
+    exportSchema = false
 )
 abstract class UserDatabase : RoomDatabase() {
     abstract val userDao: UserDao
     abstract val productDao: ProductDao
     abstract val campaignDao: CampaignDao
+    abstract val keywordsDao: KeywordsDao
     abstract val campaignMessageDao: CampaignMessageDao
+    abstract val productSubscribersDao: ProductSubscribersDao
+    abstract val userMessageDao: UserMessageDao
 }
 
 private lateinit var INSTANCE: UserDatabase

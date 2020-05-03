@@ -4,7 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.minipromoter.App
+import com.example.minipromoter.Utils.Event
 import com.example.minipromoter.models.Campaign
+import com.example.minipromoter.models.Keywords
 import com.example.minipromoter.models.ProductModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,24 +25,42 @@ class AddNewCampaignDialogViewModel(val productModel: ProductModel) : BaseViewMo
 
     val tittle = MutableLiveData("")
     val message = MutableLiveData("")
-    val onButtonClicked = MutableLiveData(false)
+    val expireMessage = MutableLiveData("")
+    val onButtonClicked = MutableLiveData<Event<Unit>>()
 
 
     fun onAddClicked() {
-        onButtonClicked.value = true
-        onButtonClicked.value = false
+        onButtonClicked.value = Event(Unit)
     }
 
-    fun addNewCampain() {
+    fun addNewCampaign() {
         coroutineScope.launch(Dispatchers.IO) {
-            val campain =
+            val campaign =
                 Campaign(
-                    campaignName = productModel.productName + ": " + tittle.value!!,
-                    campaignMessage = message.value!!,
-                    productId = productModel.productId
+                    productId = productModel.productId,
+                    campaignMessage = message.value,
+                    expiryAutoMessageReply = expireMessage.value
+
+
                 )
-            App.getUserRepository().insertCampaign(campain)
+            val campaignId = App.getUserRepository().database.campaignDao.insertCampaign(campaign)
+            insertPrimaryKeywords(campaignId)
+
+
         }
+    }
+
+    private fun insertPrimaryKeywords(campaignId: Long) {
+
+        val subKeyword =
+            Keywords(description = "Sub ${productModel.productName}", campaignId = campaignId)
+        val unSubKeyword =
+            Keywords(description = "unSub ${productModel.productName}", campaignId = campaignId)
+
+        App.getUserRepository().database.keywordsDao.insertKeywords(subKeyword)
+        App.getUserRepository().database.keywordsDao.insertKeywords(unSubKeyword)
+
+
     }
 
 

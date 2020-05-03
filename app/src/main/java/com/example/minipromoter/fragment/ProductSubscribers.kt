@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.minipromoter.viewmodels.ProductSubscribersViewModel
 import com.example.minipromoter.R
@@ -17,7 +18,7 @@ import com.example.minipromoter.databinding.ProductSubscribersFragmentBinding
 
 
 class ProductSubscribers : Fragment() {
-    val args: ProductSubscribersArgs by navArgs()
+    private val args: ProductSubscribersArgs by navArgs()
 
     private val viewModel: ProductSubscribersViewModel by lazy {
         ViewModelProvider(
@@ -39,11 +40,14 @@ class ProductSubscribers : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         val adapter = UserAdapter(UserOnClickListener {
-
+            findNavController().navigate(
+                ProductSubscribersDirections.actionProductSubscribersToChatsFragment(
+                    it
+                )
+            )
         })
 
         binding.rvUsers.adapter = adapter
-
         viewModel.userList.observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
                 adapter.submitList(it)

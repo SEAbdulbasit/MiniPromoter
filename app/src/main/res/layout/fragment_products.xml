@@ -16,20 +16,26 @@
         android:layout_height="match_parent"
         tools:context=".fragment.ProductsFragment">
 
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar_main"
+            toolbarTittle="@{viewModel.toolbarTittle}"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvProduct"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:clipToPadding="false"
             android:layout_marginStart="@dimen/five_dp"
             android:layout_marginEnd="@dimen/five_dp"
-            android:layout_marginTop="@dimen/five_dp"
+            android:clipToPadding="false"
             android:paddingTop="@dimen/ten_dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
             tools:listitem="@layout/product_item" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

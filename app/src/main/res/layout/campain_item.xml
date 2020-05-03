@@ -26,7 +26,7 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{model.campaignName}"
+                android:text='@{"Campaign Id : "+String.valueOf(model.campaignId)}'
                 android:textColor="@color/black"
                 android:textSize="@dimen/sixteen_sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +55,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/twelve_sp"
                 app:layout_constraintTop_toBottomOf="@+id/materialTextView"
-                app:setCreationTime="@{model.campaignCreationDate}"
+                app:setCreationTime="@{model.createdOn}"
                 tools:text="Message , here goes the message" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

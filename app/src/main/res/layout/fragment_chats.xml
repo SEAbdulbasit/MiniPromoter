@@ -7,31 +7,32 @@
 
         <variable
             name="viewModel"
-            type="com.example.minipromoter.viewmodels.AddNewProductDialogViewModel" />
+            type="com.example.minipromoter.viewmodels.ChatsViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingStart="@dimen/twenty_dp"
-        android:paddingTop="@dimen/twenty_dp"
-        android:paddingEnd="@dimen/twenty_dp"
-        android:paddingBottom="@dimen/twenty_dp"
-        tools:context=".dialogs.AddNewCampaignDialog"
-        tools:listitem="@layout/fragment_add_new_campain_dialog_list_dialog_item">
+        tools:context=".fragment.ChatsFragment">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMessages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/user_message_item"
+            android:text="@string/hello_blank_fragment"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ilName"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/eight_dp"
-            android:layout_marginTop="@dimen/twenty_dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_marginStart="@dimen/five_dp"
+            android:layout_marginBottom="@dimen/ten_dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/sendMessage"
+            app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etName"
@@ -41,22 +42,22 @@
                 android:hint="@string/enter_product_name"
                 android:inputType="textEmailAddress"
                 android:singleLine="true"
-                android:text="@={viewModel.tittle}"
+                android:text="@={viewModel.message}"
                 tools:ignore="UnusedAttribute" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-
-        <com.google.android.material.textview.MaterialTextView
+        <ImageView
+            android:id="@+id/sendMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/twenty_dp"
-            android:onClick="@{v->viewModel.onAddClicked()}"
+            android:onClick="@{v->viewModel.addUserMessage()}"
             android:padding="@dimen/ten_dp"
-            android:text="@string/add_product"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/eighteen_sp"
+            android:src="@drawable/ic_forward"
+            app:layout_constraintBottom_toBottomOf="@+id/ilName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ilName" />
+            app:layout_constraintStart_toEndOf="@+id/ilName"
+            app:layout_constraintTop_toTopOf="@+id/ilName" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -20,7 +20,7 @@
         android:paddingTop="@dimen/twenty_dp"
         android:paddingEnd="@dimen/twenty_dp"
         android:paddingBottom="@dimen/twenty_dp"
-        tools:context=".fragment.AddNewCampaignDialog"
+        tools:context=".dialogs.AddNewCampaignDialog"
         tools:listitem="@layout/fragment_add_new_campain_dialog_list_dialog_item">
 
 
@@ -71,18 +71,39 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/itExpireMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/eight_dp"
+            android:layout_marginTop="@dimen/twenty_dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tiMessage">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etExpireMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusedByDefault="false"
+                android:gravity="top"
+                android:hint="@string/expire_message"
+                android:imeOptions="actionDone"
+                android:lines="3"
+                android:text="@={viewModel.expireMessage}"
+                tools:ignore="UnusedAttribute" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/twenty_dp"
+            android:layout_marginTop="@dimen/ten_dp"
             android:onClick="@{v->viewModel.onAddClicked()}"
             android:padding="@dimen/ten_dp"
             android:text="@string/add_campain"
             android:textColor="@color/colorPrimary"
-
             android:textSize="@dimen/eighteen_sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tiMessage" />
+            app:layout_constraintTop_toBottomOf="@+id/itExpireMessage" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
