@@ -17,16 +17,20 @@ import kotlinx.coroutines.launch
 
 class AddNewProductDialogViewModel : BaseViewModel() {
 
+    //coroutine scope so we can cancel the job if view model gets destroyed
     private var viewModelJob = Job()
     private var coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
+    //live data bind to views
     val tittle = MutableLiveData("")
     val onButtonClicked = MutableLiveData<Event<Unit>>()
 
+    //on button click function which triggers from view
     fun onAddClicked() {
         onButtonClicked.value = Event(Unit)
     }
 
+    // function to add new product into db
     fun addNewProduct() {
         coroutineScope.launch(Dispatchers.IO) {
             val productModel = ProductModel(productName = tittle.value!!)
@@ -34,7 +38,8 @@ class AddNewProductDialogViewModel : BaseViewModel() {
         }
     }
 
-    class Factory() :
+    // a factory call to return view model object
+    class Factory :
         ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(AddNewProductDialogViewModel::class.java)) {

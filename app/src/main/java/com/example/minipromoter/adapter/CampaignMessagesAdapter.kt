@@ -38,7 +38,7 @@ class CampaignMessagesAdapter(private val onClickListener: CampaignMessageOnClic
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var client = getItem(position)
+        val client = getItem(position)
         holder.itemView.setOnClickListener {
             onClickListener.onClick(client)
         }

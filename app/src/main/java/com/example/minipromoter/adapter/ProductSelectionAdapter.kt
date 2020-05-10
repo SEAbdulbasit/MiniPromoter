@@ -39,7 +39,7 @@ class ProductSelectionAdapter(val onClickListener: OnClickListener) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var client = getItem(position)
+        val client = getItem(position)
         holder.itemView.setOnClickListener {
             onClickListener.onClick(client)
         }
@@ -65,8 +65,8 @@ class ProductSelectionAdapter(val onClickListener: OnClickListener) :
 
 class OnClickListener(
     val clickListener: (client: ProductModel) -> Unit,
-    val subscriberListner: (client: ProductModel) -> Unit
+    val subscriberListener: (client: ProductModel) -> Unit
 ) {
     fun onClick(client: ProductModel) = clickListener(client)
-    fun onSubscribersClicked(client: ProductModel) = subscriberListner(client)
+    fun onSubscribersClicked(client: ProductModel) = subscriberListener(client)
 }

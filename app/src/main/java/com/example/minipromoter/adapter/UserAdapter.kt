@@ -12,7 +12,7 @@ import com.example.minipromoter.databinding.UserItemBinding
 import com.example.minipromoter.models.ProductModel
 import com.example.minipromoter.models.UserModel
 
-class UserAdapter(val onClickListener: UserOnClickListener) :
+class UserAdapter(private val onClickListener: UserOnClickListener) :
     ListAdapter<UserModel, UserAdapter.ViewHolder>(
         DiffCallBack
     ) {
@@ -36,7 +36,7 @@ class UserAdapter(val onClickListener: UserOnClickListener) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var client = getItem(position)
+        val client = getItem(position)
         holder.itemView.setOnClickListener {
             onClickListener.onClick(client)
         }

@@ -14,4 +14,5 @@
     <string name="subscribers">Subscribers</string>
     <string name="expire_message">Expire message</string>
     <string name="keywords">Keywords</string>
+    <string name="message">Message</string>
 </resources>

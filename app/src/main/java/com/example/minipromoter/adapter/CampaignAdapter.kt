@@ -26,6 +26,8 @@ class CampaignAdapter(private val onClickListener: CampainOnClickListener) :
 
             val date = Date(model.createdOn)
             val df = DateFormat.getDateTimeInstance()
+
+            //formatting the date to a specific format
             binding.date.text = df.format(date)
 
             binding.executePendingBindings()
@@ -44,13 +46,14 @@ class CampaignAdapter(private val onClickListener: CampainOnClickListener) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var client = getItem(position)
+        val client = getItem(position)
         holder.itemView.setOnClickListener {
             onClickListener.onClick(client)
         }
         holder.bind(client)
     }
 
+    // check if items are same or not, so based on notify it will check
     companion object DiffCallBack : DiffUtil.ItemCallback<Campaign>() {
         override fun areItemsTheSame(
             oldItem: Campaign,

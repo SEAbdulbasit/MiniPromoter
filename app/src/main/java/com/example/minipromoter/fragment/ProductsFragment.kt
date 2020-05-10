@@ -35,21 +35,27 @@ class ProductsFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        binding.rvProduct.adapter = ProductSelectionAdapter(OnClickListener(clickListener = {
+        //assigning adapter to recycle view
+        binding.rvProduct.adapter = ProductSelectionAdapter(
 
-            val directions =
-                ProductsFragmentDirections.actionProductsFragmentToCampainsFragment(it)
-            findNavController().navigate(directions)
+            //forwarding click listeners
+            OnClickListener(clickListener = {
 
-        }, subscriberListner = {
-            findNavController().navigate(
-                ProductsFragmentDirections.actionProductsFragmentToProductSubscribers(
-                    productModel = it
+                val directions =
+                    ProductsFragmentDirections.actionProductsFragmentToCampainsFragment(it)
+                findNavController().navigate(directions)
+
+            }, subscriberListener = {
+                findNavController().navigate(
+                    ProductsFragmentDirections.actionProductsFragmentToProductSubscribers(
+                        productModel = it
+                    )
                 )
-            )
 
-        }))
+            })
+        )
 
+        // adding line each item in recycle view
         binding.rvProduct.addItemDecoration(
             DividerItemDecoration(
                 context,
@@ -57,6 +63,7 @@ class ProductsFragment : Fragment() {
             )
         )
 
+        //observing products live data so we can notify the adapter
         viewModel.product.observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
                 val adapter = binding.rvProduct.adapter as ProductSelectionAdapter
@@ -64,7 +71,10 @@ class ProductsFragment : Fragment() {
             }
         })
 
+        //floating action button click listener
         binding.fbAdd.setOnClickListener {
+
+            // show add new product dialog
             showAddNewProductFragment()
         }
 
@@ -73,6 +83,8 @@ class ProductsFragment : Fragment() {
 
 
     private fun showAddNewProductFragment() {
+
+        // creating new instance of dialog and showing
         AddNewProductDialog.newInstance().show(childFragmentManager, "dialog")
 
     }

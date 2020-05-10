@@ -10,6 +10,7 @@ import kotlinx.android.parcel.Parcelize
 // Created by Abdul Basit on 3/8/2020.
 //
 
+//user model
 @Parcelize
 @Entity(tableName = "users")
 data class UserModel(
@@ -30,6 +31,7 @@ data class UserModel(
     val roleId: Long? = 0
 ) : Parcelable
 
+//product model
 @Entity(tableName = "products")
 @Parcelize
 data class ProductModel constructor(
@@ -43,6 +45,7 @@ data class ProductModel constructor(
     val isDeleted: Boolean = false
 ) : Parcelable
 
+// campaign table and we have 1-m relationships between products and campaign
 @Parcelize
 @Entity(
     tableName = "campaigns_table",
@@ -72,6 +75,7 @@ data class Campaign(
     val productId: Long
 ) : Parcelable
 
+//keywords table       we have 1-m relationship between campaign and keywords
 @Parcelize
 @Entity(
     tableName = "keywords_table",
@@ -99,6 +103,8 @@ data class Keywords(
     val campaignId: Long
 ) : Parcelable
 
+
+//campaign message table        we have 1-m relationship between campaign and campaign message
 @Parcelize
 @Entity(
     tableName = "campaign_messages",
@@ -130,6 +136,8 @@ data class CampaignMessages(
     val campaignId: Long
 ) : Parcelable
 
+
+//products subscribers        we have m-m relationship between products and users
 @Entity(
     tableName = "subscribers_products_table",
     foreignKeys = [ForeignKey(
@@ -148,6 +156,7 @@ data class SubscribersProductsCrossRef(
     val id: Long = 0,
     val userId: Long,
     val productId: Long,
+    var isActive: Boolean = true,
     val createdOn: Long = System.currentTimeMillis(),
     val createdBy: String? = null,
     val updatedOn: Long = System.currentTimeMillis(),
@@ -155,6 +164,7 @@ data class SubscribersProductsCrossRef(
     val isDeleted: Boolean = false
 )
 
+//user message table        1-m relationship between user and message
 @Parcelize
 @Entity(
     tableName = "user_message",

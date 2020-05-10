@@ -13,7 +13,10 @@ import com.example.minipromoter.App
 class FragmentProductViewModel :
     BaseViewModel() {
 
+    //products live data to get data from db
     val product = App.getUserRepository().database.productDao.getAllProducts()
+
+    //toolbar tittle
     val toolbarTittle = MutableLiveData("Products")
 
 

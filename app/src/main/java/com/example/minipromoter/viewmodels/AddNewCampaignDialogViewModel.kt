@@ -19,13 +19,17 @@ import kotlinx.coroutines.launch
 
 class AddNewCampaignDialogViewModel(val productModel: ProductModel) : BaseViewModel() {
 
+    //coroutine scope so we can cancel the job if view model is destroyed
     private var viewModelJob = Job()
     private var coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
 
+    // mutable live data which are bind to view through 2 way data binding
     val tittle = MutableLiveData("")
     val message = MutableLiveData("")
     val expireMessage = MutableLiveData("")
+
+    // event type data so we can send events to fragment
     val onButtonClicked = MutableLiveData<Event<Unit>>()
 
 
@@ -33,6 +37,7 @@ class AddNewCampaignDialogViewModel(val productModel: ProductModel) : BaseViewMo
         onButtonClicked.value = Event(Unit)
     }
 
+    //function to add new campaign
     fun addNewCampaign() {
         coroutineScope.launch(Dispatchers.IO) {
             val campaign =
@@ -50,13 +55,15 @@ class AddNewCampaignDialogViewModel(val productModel: ProductModel) : BaseViewMo
         }
     }
 
+    //function to insert the default keywords in keywords table
     private fun insertPrimaryKeywords(campaignId: Long) {
 
         val subKeyword =
-            Keywords(description = "Sub ${productModel.productName}", campaignId = campaignId)
+            Keywords(description = "sub ${productModel.productName}", campaignId = campaignId)
         val unSubKeyword =
-            Keywords(description = "unSub ${productModel.productName}", campaignId = campaignId)
+            Keywords(description = "unsub ${productModel.productName}", campaignId = campaignId)
 
+        // adding those models into db
         App.getUserRepository().database.keywordsDao.insertKeywords(subKeyword)
         App.getUserRepository().database.keywordsDao.insertKeywords(unSubKeyword)
 

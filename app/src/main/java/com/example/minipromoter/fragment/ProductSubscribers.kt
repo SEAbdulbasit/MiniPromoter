@@ -18,8 +18,11 @@ import com.example.minipromoter.databinding.ProductSubscribersFragmentBinding
 
 
 class ProductSubscribers : Fragment() {
+
+    // arguments from previous fragment
     private val args: ProductSubscribersArgs by navArgs()
 
+    // view models for fragment
     private val viewModel: ProductSubscribersViewModel by lazy {
         ViewModelProvider(
             this,
@@ -35,11 +38,14 @@ class ProductSubscribers : Fragment() {
 
         val binding = ProductSubscribersFragmentBinding.inflate(inflater)
 
-
+        // assigning the view model and lifecycle
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        //adapter object
         val adapter = UserAdapter(UserOnClickListener {
+
+            //opening the chats fragment/screen
             findNavController().navigate(
                 ProductSubscribersDirections.actionProductSubscribersToChatsFragment(
                     it
@@ -47,7 +53,10 @@ class ProductSubscribers : Fragment() {
             )
         })
 
+        //assigning adapter to recyclerview
         binding.rvUsers.adapter = adapter
+
+        //observing the live data of users
         viewModel.userList.observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
                 adapter.submitList(it)

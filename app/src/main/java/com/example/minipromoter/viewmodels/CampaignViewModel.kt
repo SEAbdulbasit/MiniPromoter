@@ -12,18 +12,21 @@ import com.example.minipromoter.models.ProductModel
 
 class CampaignViewModel(productModel: ProductModel) : BaseViewModel() {
 
-
+    //campaign list live data
     val campaignList =
         App.getUserRepository().database.campaignDao.getProductsCampaigns(productModel.productId)
+
+    //toolbar tittle live data
     val toolbarTittle = MutableLiveData("Campaigns")
 
 
-    class Factory(private val prodcutName: ProductModel) :
+    //factory to create view model
+    class Factory(private val productName: ProductModel) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(CampaignViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return CampaignViewModel(prodcutName) as T
+                return CampaignViewModel(productName) as T
             }
             throw IllegalArgumentException("Unable to construct view model")
         }

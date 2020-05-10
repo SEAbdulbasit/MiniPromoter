@@ -21,7 +21,7 @@ interface UserDao {
     fun getSingleUserWithOutLiveData(value: String): UserModel
 
     @Query("SELECT * FROM users WHERE phoneNumber LIKE :value LIMIT 1")
-    fun findUserByPhoneNumber(value: String): UserModel
+    fun findUserByPhoneNumber(value: String): UserModel?
 }
 
 @Dao
@@ -76,7 +76,7 @@ interface KeywordsDao {
     fun getCampaignKeywords(value: Long): LiveData<List<Keywords>>
 
     @Query("SELECT * FROM keywords_table WHERE description LIKE :value LIMIT 1")
-    fun getKeywordByMessage(value: String): Keywords
+    fun getKeywordByMessage(value: String): Keywords?
 }
 
 @Dao
@@ -97,19 +97,20 @@ interface CampaignMessageDao {
 
 @Dao
 interface UserMessageDao {
+
     @Query("SELECT * FROM user_message")
     fun getAllMessages(): LiveData<List<UserMessage>>
 
     @Query("SELECT * FROM user_message where messageId=:value")
     fun getUserLastMessage(value: Long): UserMessage
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     fun insertUserMessage(vararg userMessage: UserMessage)
 
     @Update
     fun updateUserMessage(userMessage: UserMessage)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     fun insertUserMessage(campaign: UserMessage): Long
 
     @Transaction
@@ -123,11 +124,14 @@ interface ProductSubscribersDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insert(userRepoJoin: SubscribersProductsCrossRef)
 
+    @Update
+    fun update(userRepoJoin: SubscribersProductsCrossRef)
+
     @Query("SELECT * FROM users INNER JOIN subscribers_products_table ON productId=subscribers_products_table.productId WHERE subscribers_products_table.productId=:productId")
     fun getProductSubscribers(productId: Long): LiveData<List<UserModel>>
 
     @Query("SELECT * FROM subscribers_products_table where productId LIKE :productId AND userId LIKE :userId ")
-    fun getProductAndUserSubscriber(productId: Long, userId: Long): SubscribersProductsCrossRef
+    fun getProductAndUserSubscriber(productId: Long, userId: Long): SubscribersProductsCrossRef?
 }
 
 

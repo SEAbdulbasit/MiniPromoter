@@ -11,28 +11,40 @@ import kotlinx.coroutines.*
 
 class CampaignMessagesViewModel(val model: Campaign) : ViewModel() {
 
+    //coroutine scope
     private var viewModelJob = Job()
     private var coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
+    // getting keywords list from db
     val keywords = App.getUserRepository().database.keywordsDao.getAllKeywords()
+
+    // getting camping messages list from db
     val campaignMessage =
         App.getUserRepository().database.campaignMessageDao.getAllCampaignMessages()
+
+    //getting product subscribers
     val productSubscribers =
         App.getUserRepository().database.productSubscribersDao.getProductSubscribers(model.productId)
 
-    val hashmapWithPhoneAndSMSID = HashMap<String, Long>()
+    // hashmap to save phone number and message table id
+    private val hashmapWithPhoneAndSMSID = HashMap<String, Long>()
 
-
+    //function which triggers on floating action button click
     fun startSendingMessage() {
         insertMessageIntoCampaignMessages()
     }
 
+    // if message is successfully send to that number so we update our flag that message was send successfully
     fun messageSuccessfullySend(phoneNumber: String) {
         GlobalScope.launch {
             val messageId = hashmapWithPhoneAndSMSID[phoneNumber]
             val userMessage =
                 App.getUserRepository().database.userMessageDao.getUserLastMessage(messageId!!)
+
+            //updating the flag
             userMessage.isSuccessfullySend = true
+
+            //updating in db
             App.getUserRepository().database.userMessageDao.updateUserMessage(userMessage)
 
         }
@@ -67,6 +79,7 @@ class CampaignMessagesViewModel(val model: Campaign) : ViewModel() {
     }
 
 
+    //factory to get the view model
     class Factory(val model: Campaign) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

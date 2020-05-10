@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import com.example.minipromoter.App
 
 
+/* a utils class to save and get data from shared preferences
+* */
 object SharedPrefUtils {
     private var mSharedPref: SharedPreferences? = null
 

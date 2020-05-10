@@ -39,7 +39,7 @@ class UserMessagesAdapter(private val onClickListener: UserMessageOnClickListene
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var client = getItem(position)
+        val client = getItem(position)
         holder.itemView.setOnClickListener {
             onClickListener.onClick(client)
         }

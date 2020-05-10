@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.telephony.SmsManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,8 +30,10 @@ import kotlinx.coroutines.launch
 
 class CampaignMessagesFragment : Fragment() {
 
+    //arguments from the fragments
     private val args: CampaignMessagesFragmentArgs by navArgs()
 
+    // view model for fragment
     private val viewModel: CampaignMessagesViewModel by lazy {
         ViewModelProvider(
             this,
@@ -47,13 +48,16 @@ class CampaignMessagesFragment : Fragment() {
 
         val binding = FragmentCampainMessagesBinding.inflate(inflater)
 
+        //assigning the view model and lifecycle
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        //assigning adapter to recyclerview
         binding.rvKeywords.adapter = KeywordsAdapter(KeywordsClickListner {
 
         })
 
+        //adding line to recyclerview
         binding.rvKeywords.addItemDecoration(
             DividerItemDecoration(
                 context,
@@ -61,17 +65,22 @@ class CampaignMessagesFragment : Fragment() {
             )
         )
 
+        //observing the keywords live data so we can submit to adapter on data change
         viewModel.keywords.observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
                 val adapter = binding.rvKeywords.adapter as KeywordsAdapter
+
+                // submitting the data to adapter
                 adapter.submitList(it)
             }
         })
 
+        // assigning adapter to campaign messages recyclerview
         binding.rvCampaignMessages.adapter =
             CampaignMessagesAdapter(CampaignMessageOnClickListener {
             })
 
+        // observing the campaign message live data so we can notify the adapter
         viewModel.campaignMessage.observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
                 val adapter = binding.rvCampaignMessages.adapter as CampaignMessagesAdapter
@@ -80,6 +89,7 @@ class CampaignMessagesFragment : Fragment() {
         })
 
 
+        // click listener to floating button
         binding.fbAdd.setOnClickListener {
             viewModel.startSendingMessage()
             sendMessage(viewModel.model.campaignMessage!!)
@@ -91,12 +101,14 @@ class CampaignMessagesFragment : Fragment() {
 
     private fun sendMessage(message: String) {
 
+        //sending message
         viewModel.productSubscribers.value?.forEach { userModel ->
             GlobalScope.launch(Dispatchers.IO) {
 
                 val SENT = "SMS_SENT"
                 val sentPI = PendingIntent.getBroadcast(context!!, 0, Intent(SENT), 0)
 
+                //callback if message was send successfully or not
                 activity!!.registerReceiver(object : BroadcastReceiver() {
                     override fun onReceive(arg0: Context, arg1: Intent) {
                         when (resultCode) {
@@ -134,6 +146,7 @@ class CampaignMessagesFragment : Fragment() {
                 }, IntentFilter(SENT))
 
 
+                //sending the sms
                 val smsManager: SmsManager = SmsManager.getDefault()
                 smsManager.sendTextMessage(userModel.phoneNumber, null, message, sentPI, null)
 

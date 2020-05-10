@@ -37,7 +37,7 @@ class KeywordsAdapter(private val onClickListener: KeywordsClickListner) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var client = getItem(position)
+        val client = getItem(position)
         holder.itemView.setOnClickListener {
             onClickListener.onClick(client)
         }

@@ -1,5 +1,6 @@
 package com.example.minipromoter.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -17,9 +18,8 @@ class ChatsViewModel(private val userModel: UserModel) : ViewModel() {
     private var viewModelJob = Job()
     private var coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-
     val userMessages =
-        App.getUserRepository().database.userMessageDao.getAllUserMessages(userModel.userId)
+        App.getUserRepository().database.userMessageDao.getAllMessages()//g(userModel.userId)
     val message = MutableLiveData("")
 
 
@@ -30,12 +30,14 @@ class ChatsViewModel(private val userModel: UserModel) : ViewModel() {
                 message = message.value,
                 isIncomingMessage = false
             )
-            App.getUserRepository().database.userMessageDao.insertUserMessage(userMessage)
+            val messageId =
+                App.getUserRepository().database.userMessageDao.insertUserMessage(userMessage)
+            Log.d("sf", "User id : $messageId")
         }
     }
 
 
-    class Factory(val userModel: UserModel) :
+    class Factory(private val userModel: UserModel) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(ChatsViewModel::class.java)) {

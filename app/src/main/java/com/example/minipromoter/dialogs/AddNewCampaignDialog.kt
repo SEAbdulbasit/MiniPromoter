@@ -21,6 +21,7 @@ class AddNewCampaignDialog : BottomSheetDialogFragment() {
 
     private var productName: ProductModel? = null
 
+    //view model for dialog
     private val viewModel: AddNewCampaignDialogViewModel by lazy {
         ViewModelProvider(
             this,

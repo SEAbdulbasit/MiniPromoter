@@ -23,9 +23,11 @@ class IncomingSMS : BroadcastReceiver() {
         val bundle = intent.extras
         Log.d("IncomingSMS", "Hi, i am here")
         var str = ""
+
+        // getting the incoming message details
         if (bundle != null) {
-            var from: String = ""
-            var smsBody: String = ""
+            var from = ""
+            var smsBody = ""
             val pdus = bundle.get("pdus") as Array<*>
             for (onePdus: Any? in pdus) {
                 val oneSMS = SmsMessage.createFromPdu(onePdus as ByteArray)
@@ -37,45 +39,61 @@ class IncomingSMS : BroadcastReceiver() {
                 smsBody = oneSMS.messageBody.toString()
             }
             runBlocking(Dispatchers.IO) {
+
+                // processing the incoming message
                 processTheMessage(from, smsBody)
             }
         }
     }
 
 
-    suspend fun processTheMessage(sender: String, message: String) {
+    private fun processTheMessage(sender: String, message: String) {
         try {
             val userRepository = UserRepository()
+
+            // getting the keywords against that message
             val keyword = userRepository.database.keywordsDao.getKeywordByMessage(message)
 
+            // checking if we have keyword like this
             if (keyword != null) {
 
+                // getting the user model
                 val userModel = userRepository.database.userDao.findUserByPhoneNumber(sender)
+
+                // getting the campaign model
                 val campaignModel =
                     userRepository.database.campaignDao.getCampaignById(keyword.campaignId)
+
+                //getting the product model
                 val productModel =
                     userRepository.database.productDao.getProductById(campaignModel.productId)
 
-                var userid: Long?
-                if (userModel == null) {
-                    userid =
-                        userRepository.database.userDao.insertUser(UserModel(phoneNumber = sender))
-                } else {
-                    userid = userModel.userId
-                }
+                val userid: Long?
+                userid = userModel?.userId ?: userRepository.database.userDao.insertUser(UserModel(phoneNumber = sender))
 
-                val productSubscribers =
+                var productSubscribers =
                     userRepository.database.productSubscribersDao.getProductAndUserSubscriber(
                         userid,
                         productModel.productId
                     )
                 if (productSubscribers == null) {
-                    val productSubscribers2 =
+                    productSubscribers =
                         SubscribersProductsCrossRef(
                             userId = userid,
                             productId = productModel.productId
                         )
-                    userRepository.database.productSubscribersDao.insert(productSubscribers2)
+                    userRepository.database.productSubscribersDao.insert(productSubscribers)
+                } else {
+
+                    if (keyword.description?.contains("unsub", ignoreCase = true)!!) {
+                        productSubscribers.isActive = false
+
+                    } else if (keyword.description?.contains("sub", ignoreCase = true)!!) {
+                        productSubscribers.isActive = true
+
+                    }
+                    userRepository.database.productSubscribersDao.update(productSubscribers)
+
                 }
 
                 val userMessage =
