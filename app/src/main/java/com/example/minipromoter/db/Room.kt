@@ -53,6 +53,9 @@ interface CampaignDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCampaign(campaign: Campaign): Long
 
+    @Update
+    fun updateCampaign(campaign: Campaign)
+
     @Transaction
     @Query("SELECT * FROM campaigns_table WHERE productId=:value")
     fun getProductsCampaigns(value: Long): LiveData<List<Campaign>>
@@ -66,8 +69,14 @@ interface KeywordsDao {
     @Query("SELECT * FROM keywords_table")
     fun getAllKeywords(): LiveData<List<Keywords>>
 
+    @Query("SELECT * FROM keywords_table WHERE isOption=1 AND campaignId=:value")
+    fun getAllOptionKeyword(value: Long): LiveData<List<Keywords>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertKeywords(vararg keywords: Keywords)
+
+    @Update
+    fun updateKeywords(vararg keywords: Keywords)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertKeywords(campaign: Keywords): Long
@@ -75,8 +84,8 @@ interface KeywordsDao {
     @Query("SELECT * FROM keywords_table WHERE campaignId=:value")
     fun getCampaignKeywords(value: Long): LiveData<List<Keywords>>
 
-    @Query("SELECT * FROM keywords_table WHERE description LIKE :value LIMIT 1")
-    fun getKeywordByMessage(value: String): Keywords?
+    @Query("SELECT * FROM keywords_table WHERE inviteMessage LIKE :value LIMIT 1")
+    fun getKeywordByInviteMessage(value: String): Keywords?
 }
 
 @Dao
@@ -121,16 +130,16 @@ interface UserMessageDao {
 
 @Dao
 interface ProductSubscribersDao {
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun insert(userRepoJoin: SubscribersProductsCrossRef)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(userRepoJoin: SubscribersProductsCrossRef): Long
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(userRepoJoin: SubscribersProductsCrossRef)
 
     @Query("SELECT * FROM users INNER JOIN subscribers_products_table ON productId=subscribers_products_table.productId WHERE subscribers_products_table.productId=:productId")
     fun getProductSubscribers(productId: Long): LiveData<List<UserModel>>
 
-    @Query("SELECT * FROM subscribers_products_table where productId LIKE :productId AND userId LIKE :userId ")
+    @Query("SELECT * FROM subscribers_products_table where productId=:productId AND userId=:userId LIMIT 1")
     fun getProductAndUserSubscriber(productId: Long, userId: Long): SubscribersProductsCrossRef?
 }
 

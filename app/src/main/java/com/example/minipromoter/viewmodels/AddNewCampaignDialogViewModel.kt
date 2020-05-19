@@ -28,6 +28,9 @@ class AddNewCampaignDialogViewModel(val productModel: ProductModel) : BaseViewMo
     val tittle = MutableLiveData("")
     val message = MutableLiveData("")
     val expireMessage = MutableLiveData("")
+    val isPolls = MutableLiveData(false)
+    val option1 = MutableLiveData("")
+    val option2 = MutableLiveData("")
 
     // event type data so we can send events to fragment
     val onButtonClicked = MutableLiveData<Event<Unit>>()
@@ -44,28 +47,68 @@ class AddNewCampaignDialogViewModel(val productModel: ProductModel) : BaseViewMo
                 Campaign(
                     productId = productModel.productId,
                     campaignMessage = message.value,
+                    campaignTittle = tittle.value?.trim(),
                     expiryAutoMessageReply = expireMessage.value
 
 
                 )
             val campaignId = App.getUserRepository().database.campaignDao.insertCampaign(campaign)
-            insertPrimaryKeywords(campaignId)
+            insertPrimaryKeywords(campaignId, campaign)
 
 
         }
     }
 
     //function to insert the default keywords in keywords table
-    private fun insertPrimaryKeywords(campaignId: Long) {
+    private fun insertPrimaryKeywords(campaignId: Long, campaign: Campaign) {
 
         val subKeyword =
-            Keywords(description = "sub ${productModel.productName}", campaignId = campaignId)
+            Keywords(
+                inviteMessage = "<Sub>Sub ${productModel.productName}",
+                description = "For Subscription",
+                campaignId = campaignId
+            )
         val unSubKeyword =
-            Keywords(description = "unsub ${productModel.productName}", campaignId = campaignId)
+            Keywords(
+                inviteMessage = "<sub>UnSub ${productModel.productName}",
+                description = "For Unsubscribe",
+                campaignId = campaignId
+            )
+
 
         // adding those models into db
         App.getUserRepository().database.keywordsDao.insertKeywords(subKeyword)
         App.getUserRepository().database.keywordsDao.insertKeywords(unSubKeyword)
+
+        if (isPolls.value!!) {
+
+            val option1Keywords =
+                Keywords(
+                    inviteMessage = "<Vote>${campaign.campaignTittle}#1",
+                    description = option1.value,
+                    isOption = true,
+                    campaignId = campaignId
+                )
+            val option2Keywords =
+                Keywords(
+                    inviteMessage = "<Vote>${campaign.campaignTittle}#2",
+                    description = option2.value,
+                    isOption = true,
+                    campaignId = campaignId
+                )
+            App.getUserRepository().database.keywordsDao.insertKeywords(option1Keywords)
+            App.getUserRepository().database.keywordsDao.insertKeywords(option2Keywords)
+
+            val message = "Vote\n " +
+                    option1Keywords.description + " send " + option1Keywords.inviteMessage + "\n" +
+                    option2Keywords.description + " send " + option2Keywords.inviteMessage
+
+            campaign.campaignMessage = campaign.campaignMessage + "\n" + message
+            campaign.campaignId = campaignId
+            App.getUserRepository().database.campaignDao.updateCampaign(campaign)
+
+
+        }
 
 
     }

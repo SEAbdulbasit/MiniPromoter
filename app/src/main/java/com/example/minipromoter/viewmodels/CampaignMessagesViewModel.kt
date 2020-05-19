@@ -1,10 +1,12 @@
 package com.example.minipromoter.viewmodels
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.minipromoter.App
 import com.example.minipromoter.models.Campaign
 import com.example.minipromoter.models.CampaignMessages
+import com.example.minipromoter.models.Keywords
 import com.example.minipromoter.models.UserMessage
 import kotlinx.coroutines.*
 
@@ -16,7 +18,12 @@ class CampaignMessagesViewModel(val model: Campaign) : ViewModel() {
     private var coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     // getting keywords list from db
-    val keywords = App.getUserRepository().database.keywordsDao.getAllKeywords()
+    val keywords =
+        App.getUserRepository().database.keywordsDao.getCampaignKeywords(model.campaignId)
+    var optionKeywords =
+        App.getUserRepository().database.keywordsDao.getAllOptionKeyword(model.campaignId)
+
+    var optionKeywordsSize = MutableLiveData(1)
 
     // getting camping messages list from db
     val campaignMessage =
@@ -28,6 +35,7 @@ class CampaignMessagesViewModel(val model: Campaign) : ViewModel() {
 
     // hashmap to save phone number and message table id
     private val hashmapWithPhoneAndSMSID = HashMap<String, Long>()
+
 
     //function which triggers on floating action button click
     fun startSendingMessage() {

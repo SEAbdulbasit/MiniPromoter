@@ -1,7 +1,10 @@
 package com.example.minipromoter
 
 import android.app.Application
+import android.util.Log
+import com.amitshekhar.DebugDB
 import com.example.minipromoter.repository.UserRepository
+import com.facebook.stetho.Stetho
 
 //
 // Created by Abdul Basit on 2/17/2020.
@@ -13,6 +16,9 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        Stetho.initializeWithDefaults(this)
+        Log.d("App","DB Address: " + DebugDB.getAddressLog())
 
     }
 

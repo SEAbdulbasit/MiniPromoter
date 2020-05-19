@@ -68,4 +68,9 @@ dependencies {
     // navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.1'
+
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+    implementation 'com.facebook.stetho:stetho:1.5.1'
+
+
 }

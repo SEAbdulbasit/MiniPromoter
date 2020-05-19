@@ -1,5 +1,6 @@
 package com.example.minipromoter.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -10,17 +11,40 @@ import com.example.minipromoter.R
 import com.example.minipromoter.databinding.CampaignMessageItemBinding
 import com.example.minipromoter.databinding.KeywordItemBinding
 import com.example.minipromoter.models.Keywords
+import com.example.minipromoter.viewmodels.CampaignMessagesViewModel
 
 
-class KeywordsAdapter(private val onClickListener: KeywordsClickListner) :
+class KeywordsAdapter(
+    private val campaignMessagesViewModel: CampaignMessagesViewModel,
+    private val onClickListener: KeywordsClickListner
+) :
     ListAdapter<Keywords, KeywordsAdapter.ViewHolder>(
         DiffCallBack
     ) {
 
-    class ViewHolder(private var binding: KeywordItemBinding) :
+    inner class ViewHolder(private var binding: KeywordItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(model: Keywords) {
             binding.model = model
+
+            if (model.isOption) {
+
+                Log.d(
+                    "KeywordsAdapter",
+                    "Total : ${campaignMessagesViewModel.optionKeywordsSize.value} And item size : ${model.count}"
+                )
+
+                val progress =
+                    ((model.count.toDouble() / campaignMessagesViewModel.optionKeywordsSize.value!!) * 100).toInt()
+
+                Log.d("KeywordsAdapter", "Progress : " + progress)
+
+                binding.progressBar.progress = progress.toInt()
+
+
+                binding.tvProgress.text = progress.toString() + "%"
+            }
+
             binding.executePendingBindings()
 
         }

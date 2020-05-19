@@ -23,6 +23,7 @@ import com.example.minipromoter.adapter.KeywordsAdapter
 import com.example.minipromoter.adapter.KeywordsClickListner
 import com.example.minipromoter.databinding.FragmentCampainMessagesBinding
 import com.example.minipromoter.viewmodels.CampaignMessagesViewModel
+import kotlinx.android.synthetic.main.fragment_campain_messages.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -53,7 +54,7 @@ class CampaignMessagesFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         //assigning adapter to recyclerview
-        binding.rvKeywords.adapter = KeywordsAdapter(KeywordsClickListner {
+        binding.rvKeywords.adapter = KeywordsAdapter(viewModel, KeywordsClickListner {
 
         })
 
@@ -86,6 +87,17 @@ class CampaignMessagesFragment : Fragment() {
                 val adapter = binding.rvCampaignMessages.adapter as CampaignMessagesAdapter
                 adapter.submitList(it)
             }
+        })
+
+        viewModel.optionKeywords.observe(viewLifecycleOwner, Observer {
+            var total = 0
+            it.forEach {
+                total += it.count
+            }
+            viewModel.optionKeywordsSize.value = total
+
+            rvKeywords.adapter!!.notifyDataSetChanged()
+
         })
 
 

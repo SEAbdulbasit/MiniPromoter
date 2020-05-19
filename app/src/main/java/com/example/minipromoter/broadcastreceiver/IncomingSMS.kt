@@ -3,10 +3,9 @@ package com.example.minipromoter.broadcastreceiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.telephony.SmsManager
 import android.telephony.SmsMessage
 import android.util.Log
-import com.example.minipromoter.App
-import com.example.minipromoter.fragment.ProductSubscribers
 import com.example.minipromoter.models.SubscribersProductsCrossRef
 import com.example.minipromoter.models.UserMessage
 import com.example.minipromoter.models.UserModel
@@ -48,62 +47,130 @@ class IncomingSMS : BroadcastReceiver() {
 
 
     private fun processTheMessage(sender: String, message: String) {
-        try {
-            val userRepository = UserRepository()
+        val userRepository = UserRepository()
 
-            // getting the keywords against that message
-            val keyword = userRepository.database.keywordsDao.getKeywordByMessage(message)
+        if (message.contains("<Sub>", ignoreCase = true) || message.contains(
+                "<Vote>",
+                ignoreCase = true
+            )
+        ) {
 
-            // checking if we have keyword like this
-            if (keyword != null) {
+            try {
 
-                // getting the user model
-                val userModel = userRepository.database.userDao.findUserByPhoneNumber(sender)
+                // getting the keywords against that message
+                val keyword =
+                    userRepository.database.keywordsDao.getKeywordByInviteMessage(message.toUpperCase())
 
-                // getting the campaign model
-                val campaignModel =
-                    userRepository.database.campaignDao.getCampaignById(keyword.campaignId)
+                // checking if we have keyword like this
+                if (keyword != null) {
 
-                //getting the product model
-                val productModel =
-                    userRepository.database.productDao.getProductById(campaignModel.productId)
+                    // getting the user model
+                    val userModel = checkForUser(sender, userRepository)
 
-                val userid: Long?
-                userid = userModel?.userId ?: userRepository.database.userDao.insertUser(UserModel(phoneNumber = sender))
+                    // getting the campaign model
+                    val campaignModel =
+                        userRepository.database.campaignDao.getCampaignById(keyword.campaignId)
 
-                var productSubscribers =
-                    userRepository.database.productSubscribersDao.getProductAndUserSubscriber(
-                        userid,
-                        productModel.productId
-                    )
-                if (productSubscribers == null) {
-                    productSubscribers =
-                        SubscribersProductsCrossRef(
-                            userId = userid,
-                            productId = productModel.productId
+                    //getting the product model
+                    val productModel =
+                        userRepository.database.productDao.getProductById(campaignModel.productId)
+
+
+                    var productSubscribers =
+                        userRepository.database.productSubscribersDao.getProductAndUserSubscriber(
+                            userModel?.userId!!,
+                            productModel.productId
                         )
-                    userRepository.database.productSubscribersDao.insert(productSubscribers)
-                } else {
 
-                    if (keyword.description?.contains("unsub", ignoreCase = true)!!) {
-                        productSubscribers.isActive = false
-
-                    } else if (keyword.description?.contains("sub", ignoreCase = true)!!) {
-                        productSubscribers.isActive = true
-
+                    // checking if we have that user subscribed, if not then add otherwise ignore
+                    if (productSubscribers == null) {
+                        productSubscribers =
+                            SubscribersProductsCrossRef(
+                                userId = userModel.userId,
+                                productId = productModel.productId,
+                                isActive = true
+                            )
+                        val productSubscribersId =
+                            userRepository.database.productSubscribersDao.insert(productSubscribers)
+                        productSubscribers.id = productSubscribersId
                     }
-                    userRepository.database.productSubscribersDao.update(productSubscribers)
 
+                    if (message.contains("<sub>", ignoreCase = true)) {
+                        if (message.contains("unsub", ignoreCase = true)) {
+                            updateProductSubscription(false, productSubscribers, userRepository)
+
+                        } else if (message.contains("sub", ignoreCase = true)) {
+                            updateProductSubscription(true, productSubscribers, userRepository)
+
+                        }
+                    } else if (message.contains("<Vote>", ignoreCase = true)) {
+                        keyword.count = keyword.count + 1
+                        userRepository.database.keywordsDao.updateKeywords(keyword)
+                    }
+
+
+                    val userMessage =
+                        UserMessage(
+                            userId = userModel.userId,
+                            message = message,
+                            isIncomingMessage = true
+                        )
+                    userRepository.database.userMessageDao.insertUserMessage(userMessage)
+
+
+                } else {
+                    //send message of unformatted text
+                    sendMessage("Unable to process the message", sender)
                 }
-
-                val userMessage =
-                    UserMessage(userId = userid, message = message, isIncomingMessage = true)
-                userRepository.database.userMessageDao.insertUserMessage(userMessage)
-
-
+            } catch (e: Exception) {
+                e.printStackTrace()
+                sendMessage("Unable to process the message", sender)
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } else {
+/*
+            val userModel = userRepository.database.userDao.findUserByPhoneNumber(sender)
+            userModel?.let {
+                val userMessage =
+                    UserMessage(
+                        userId = userModel.userId,
+                        message = message,
+                        isIncomingMessage = true
+                    )
+                userRepository.database.userMessageDao.insertUserMessage(userMessage)
+            }*/
         }
     }
+
+    private fun checkForUser(userNumber: String, userRepository: UserRepository): UserModel? {
+
+        // getting the user model
+        var userModel = userRepository.database.userDao.findUserByPhoneNumber(userNumber)
+
+        return if (userModel == null) {
+            userModel = UserModel(phoneNumber = userNumber)
+            val userID = userRepository.database.userDao.insertUser(userModel)
+            userModel.userId = userID
+            userModel
+        } else {
+            userModel
+        }
+    }
+
+    private fun updateProductSubscription(
+        isActive: Boolean,
+        produceSubscribersProductsCrossRef: SubscribersProductsCrossRef,
+        userRepository: UserRepository
+    ) {
+        produceSubscribersProductsCrossRef.isActive = isActive
+        userRepository.database.productSubscribersDao.update(produceSubscribersProductsCrossRef)
+    }
+
+    private fun sendMessage(message: String, number: String) {
+        //sending the sms
+        val smsManager: SmsManager = SmsManager.getDefault()
+        smsManager.sendTextMessage(number, null, message, null, null)
+
+    }
 }
+
+

@@ -15,4 +15,6 @@
     <string name="expire_message">Expire message</string>
     <string name="keywords">Keywords</string>
     <string name="message">Message</string>
+    <string name="option_1">Option 1</string>
+    <string name="option_2">Option 2</string>
 </resources>

@@ -15,7 +15,7 @@ import kotlinx.android.parcel.Parcelize
 @Entity(tableName = "users")
 data class UserModel(
     @PrimaryKey(autoGenerate = true)
-    val userId: Long = 0,
+    var userId: Long = 0,
     val subscriptionDate: Long = System.currentTimeMillis(),
     val username: String? = null,
     val companyId: String? = null,
@@ -58,8 +58,9 @@ data class ProductModel constructor(
 )
 data class Campaign(
     @PrimaryKey(autoGenerate = true)
-    val campaignId: Long = 0,
+    var campaignId: Long = 0,
     var campaignType: String? = null,
+    var campaignTittle: String? = null,
     var campaignMessage: String? = null,
     val startOn: Long = System.currentTimeMillis(),
     val endOn: Long = System.currentTimeMillis(),
@@ -100,6 +101,8 @@ data class Keywords(
     val updatedOn: Long = System.currentTimeMillis(),
     val createdOn: Long = System.currentTimeMillis(),
     val suspend: Boolean = false,
+    val isOption: Boolean = false,
+    var count: Int = 0,
     val campaignId: Long
 ) : Parcelable
 
@@ -153,7 +156,7 @@ data class CampaignMessages(
 )
 data class SubscribersProductsCrossRef(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    var id: Long = 0,
     val userId: Long,
     val productId: Long,
     var isActive: Boolean = true,
