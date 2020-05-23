@@ -37,12 +37,12 @@ class KeywordsAdapter(
                 val progress =
                     ((model.count.toDouble() / campaignMessagesViewModel.optionKeywordsSize.value!!) * 100).toInt()
 
-                Log.d("KeywordsAdapter", "Progress : " + progress)
+                Log.d("KeywordsAdapter", "Progress : $progress")
 
-                binding.progressBar.progress = progress.toInt()
+                binding.progressBar.progress = progress
 
 
-                binding.tvProgress.text = progress.toString() + "%"
+                binding.tvProgress.text = "$progress%"
             }
 
             binding.executePendingBindings()

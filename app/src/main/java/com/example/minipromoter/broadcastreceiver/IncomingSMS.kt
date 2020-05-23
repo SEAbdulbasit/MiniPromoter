@@ -76,18 +76,32 @@ class IncomingSMS : BroadcastReceiver() {
                         userRepository.database.productDao.getProductById(campaignModel.productId)
 
 
-                    var productSubscribers =
-                        userRepository.database.productSubscribersDao.getProductAndUserSubscriber(
-                            userModel?.userId!!,
+                    var productSubscribersList =
+                        userRepository.database.productSubscribersDao.getProductCrossRef(
                             productModel.productId
                         )
+                    var productSubscribers =
+                        productSubscribersList.findLast { it.parentUserId == userModel!!.userId }
+
+                    Log.d(
+                        "Incoming Message",
+                        "User $productSubscribers"
+                    )
+                    Log.d(
+                        "Incoming Message",
+                        "User ID ${userModel?.userId} and product ID ${productModel.productId}"
+                    )
+                    Log.d(
+                        "Incoming Message",
+                        "Incoming message details ${userRepository.database.productSubscribersDao.getAllProductSubscribers()}"
+                    )
 
                     // checking if we have that user subscribed, if not then add otherwise ignore
                     if (productSubscribers == null) {
                         productSubscribers =
                             SubscribersProductsCrossRef(
-                                userId = userModel.userId,
-                                productId = productModel.productId,
+                                parentUserId = userModel!!.userId,
+                                parentProductId = productModel.productId,
                                 isActive = true
                             )
                         val productSubscribersId =
@@ -111,7 +125,7 @@ class IncomingSMS : BroadcastReceiver() {
 
                     val userMessage =
                         UserMessage(
-                            userId = userModel.userId,
+                            userId = userModel!!.userId,
                             message = message,
                             isIncomingMessage = true
                         )

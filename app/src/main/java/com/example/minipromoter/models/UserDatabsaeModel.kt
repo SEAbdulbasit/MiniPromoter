@@ -145,11 +145,11 @@ data class CampaignMessages(
     tableName = "subscribers_products_table",
     foreignKeys = [ForeignKey(
         parentColumns = arrayOf("userId"),
-        childColumns = arrayOf("userId"),
+        childColumns = arrayOf("parentUserId"),
         entity = UserModel::class
     ), ForeignKey(
         parentColumns = arrayOf("productId"),
-        childColumns = arrayOf("productId"),
+        childColumns = arrayOf("parentProductId"),
         entity = ProductModel::class
     )]
 
@@ -157,8 +157,8 @@ data class CampaignMessages(
 data class SubscribersProductsCrossRef(
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0,
-    val userId: Long,
-    val productId: Long,
+    val parentUserId: Long,
+    val parentProductId: Long,
     var isActive: Boolean = true,
     val createdOn: Long = System.currentTimeMillis(),
     val createdBy: String? = null,

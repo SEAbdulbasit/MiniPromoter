@@ -3,7 +3,6 @@ package com.example.minipromoter.db
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.minipromoter.fragment.ProductSubscribers
 import com.example.minipromoter.models.*
 
 @Dao
@@ -136,11 +135,17 @@ interface ProductSubscribersDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(userRepoJoin: SubscribersProductsCrossRef)
 
-    @Query("SELECT * FROM users INNER JOIN subscribers_products_table ON productId=subscribers_products_table.productId WHERE subscribers_products_table.productId=:productId")
+    @Query("SELECT * FROM users INNER JOIN subscribers_products_table ON userId=subscribers_products_table.parentUserId WHERE subscribers_products_table.parentProductId=:productId")
     fun getProductSubscribers(productId: Long): LiveData<List<UserModel>>
 
-    @Query("SELECT * FROM subscribers_products_table where productId=:productId AND userId=:userId LIMIT 1")
-    fun getProductAndUserSubscriber(productId: Long, userId: Long): SubscribersProductsCrossRef?
+    @Query("SELECT * FROM subscribers_products_table")
+    fun getAllProductSubscribers(): List<SubscribersProductsCrossRef>
+
+    @Query("SELECT * FROM subscribers_products_table WHERE parentProductId=:productId")
+    fun getProductCrossRef(productId: Long): List<SubscribersProductsCrossRef>
+
+    @Query("SELECT * FROM subscribers_products_table WHERE parentProductId=:productId AND parentUserId=:userId LIMIT 1")
+    fun getProductAndUserSubscriber(productId: Long, userId: Long): SubscribersProductsCrossRef
 }
 
 
