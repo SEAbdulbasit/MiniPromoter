@@ -1,14 +1,20 @@
 package com.example.minipromoter.viewmodels
 
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
+import android.content.ComponentName
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.minipromoter.App
+import com.example.minipromoter.jobschedular.SendMessagesToUser
 import com.example.minipromoter.models.Campaign
 import com.example.minipromoter.models.CampaignMessages
-import com.example.minipromoter.models.Keywords
+import com.example.minipromoter.models.PendingUserOutgoingMessages
 import com.example.minipromoter.models.UserMessage
 import kotlinx.coroutines.*
+import timber.log.Timber
 
 
 class CampaignMessagesViewModel(val model: Campaign) : ViewModel() {
@@ -27,7 +33,7 @@ class CampaignMessagesViewModel(val model: Campaign) : ViewModel() {
 
     // getting camping messages list from db
     val campaignMessage =
-        App.getUserRepository().database.campaignMessageDao.getAllCampaignMessages()
+        App.getUserRepository().database.campaignMessageDao.getCampaignMessages(model.campaignId)
 
     //getting product subscribers
     val productSubscribers =
@@ -73,7 +79,7 @@ class CampaignMessagesViewModel(val model: Campaign) : ViewModel() {
         }
 
         //insert into user message
-        coroutineScope.launch {
+        coroutineScope.launch(Dispatchers.IO) {
             productSubscribers.value?.forEach {
                 val messageId = App.getUserRepository().database.userMessageDao.insertUserMessage(
                     UserMessage(
@@ -84,6 +90,39 @@ class CampaignMessagesViewModel(val model: Campaign) : ViewModel() {
                 hashmapWithPhoneAndSMSID[it.phoneNumber!!] = messageId
             }
         }
+
+        //inserting into pending messages
+        coroutineScope.launch(Dispatchers.IO) {
+            productSubscribers.value?.forEach {
+                val pendingOutgoingMessage = PendingUserOutgoingMessages(
+                    outgoingMessageUserId = it.userId,
+                    message = model.campaignMessage,
+                    sendTo = it.phoneNumber
+
+                )
+                App.getUserRepository().database.pendingUserOutgoingMessageDao.insert(
+                    pendingOutgoingMessage
+                )
+            }
+
+            //starting the job scheduler
+            startPolling(App.getInstance())
+        }
+    }
+
+    private fun startPolling(context: Context) {
+        val scheduler =
+            context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        val JOB_ID = 1
+        Timber.d("scheduler.schedule(jobInfo)")
+        val jobInfo = JobInfo.Builder(
+            JOB_ID, ComponentName(context, SendMessagesToUser::class.java)
+        )
+            .setPeriodic(900000)
+            .setPersisted(true)
+            .build()
+        scheduler.schedule(jobInfo)
+
     }
 
 

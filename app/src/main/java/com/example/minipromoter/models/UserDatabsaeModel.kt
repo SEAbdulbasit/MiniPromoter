@@ -198,6 +198,33 @@ data class UserMessage(
 ) : Parcelable
 
 
+@Parcelize
+@Entity(
+    tableName = "pending_outgoing_user_message",
+    foreignKeys = [ForeignKey(
+        entity = UserModel::class,
+        parentColumns = arrayOf("userId"),
+        childColumns = arrayOf("outgoingMessageUserId"),
+        onDelete = CASCADE
+    )]
+)
+data class PendingUserOutgoingMessages(
+    @PrimaryKey(autoGenerate = true)
+    val outgoingMessageId: Long = 0,
+    var messageType: String? = null,
+    var message: String? = null,
+    var sendTo: String? = null,
+    var isConversationMessage: Boolean = true,
+    var isSuccessfullySend: Boolean = false,
+    var messageDeliverStatus: Boolean = false,
+    val createdOn: Long = System.currentTimeMillis(),
+    val pendingFlag: Boolean = false,
+    var priority: Int = 1,
+    val isRead: Boolean = false,
+    val outgoingMessageUserId: Long
+) : Parcelable
+
+
 /*
 
 @Entity(tableName = "processedMessages")

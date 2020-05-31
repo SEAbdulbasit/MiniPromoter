@@ -2,12 +2,12 @@ package com.example.minipromoter.fragment
 
 import android.app.Activity
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
+import android.content.*
 import android.os.Bundle
 import android.telephony.SmsManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,17 +16,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.minipromoter.adapter.CampaignMessageOnClickListener
 import com.example.minipromoter.adapter.CampaignMessagesAdapter
 import com.example.minipromoter.adapter.KeywordsAdapter
 import com.example.minipromoter.adapter.KeywordsClickListner
 import com.example.minipromoter.databinding.FragmentCampainMessagesBinding
+import com.example.minipromoter.jobschedular.SendMessagesToUser
 import com.example.minipromoter.viewmodels.CampaignMessagesViewModel
 import kotlinx.android.synthetic.main.fragment_campain_messages.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 class CampaignMessagesFragment : Fragment() {
@@ -58,14 +59,6 @@ class CampaignMessagesFragment : Fragment() {
 
         })
 
-        //adding line to recyclerview
-        binding.rvKeywords.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                DividerItemDecoration.VERTICAL
-            )
-        )
-
         //observing the keywords live data so we can submit to adapter on data change
         viewModel.keywords.observe(viewLifecycleOwner, Observer {
             if (it.isNotEmpty()) {
@@ -89,22 +82,25 @@ class CampaignMessagesFragment : Fragment() {
             }
         })
 
+
         viewModel.optionKeywords.observe(viewLifecycleOwner, Observer {
             var total = 0
             it.forEach {
                 total += it.count
             }
             viewModel.optionKeywordsSize.value = total
-
             rvKeywords.adapter!!.notifyDataSetChanged()
+        })
 
+        viewModel.productSubscribers.observe(viewLifecycleOwner, Observer {
+            Log.d("CampaignMessagesFragment", "Subscribers Size : " + it.size)
         })
 
 
         // click listener to floating button
         binding.fbAdd.setOnClickListener {
             viewModel.startSendingMessage()
-            sendMessage(viewModel.model.campaignMessage!!)
+           // sendMessage(viewModel.model.campaignMessage!!)
         }
 
         return binding.root
@@ -166,5 +162,7 @@ class CampaignMessagesFragment : Fragment() {
         }
 
     }
+
+
 
 }

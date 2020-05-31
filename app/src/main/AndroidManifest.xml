@@ -4,6 +4,7 @@
     package="com.example.minipromoter">
 
     <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
 
@@ -31,6 +32,10 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".jobschedular.SendMessagesToUser"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

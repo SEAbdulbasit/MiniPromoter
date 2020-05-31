@@ -99,8 +99,8 @@ interface CampaignMessageDao {
     fun insertCampaignMessage(campaign: CampaignMessages): Long
 
     @Transaction
-    @Query("SELECT * FROM campaign_messages WHERE messageId=:value")
-    fun getCampaignMessage(value: Long): LiveData<List<CampaignMessages>>
+    @Query("SELECT * FROM campaign_messages WHERE campaignId=:value")
+    fun getCampaignMessages(value: Long): LiveData<List<CampaignMessages>>
 }
 
 @Dao
@@ -138,6 +138,9 @@ interface ProductSubscribersDao {
     @Query("SELECT * FROM users INNER JOIN subscribers_products_table ON userId=subscribers_products_table.parentUserId WHERE subscribers_products_table.parentProductId=:productId")
     fun getProductSubscribers(productId: Long): LiveData<List<UserModel>>
 
+    @Query("SELECT * FROM users INNER JOIN subscribers_products_table ON userId=subscribers_products_table.parentUserId WHERE subscribers_products_table.parentProductId=:productId")
+    fun getProductSubscribersWithOutLiveData(productId: Long): List<UserModel>
+
     @Query("SELECT * FROM subscribers_products_table")
     fun getAllProductSubscribers(): List<SubscribersProductsCrossRef>
 
@@ -146,6 +149,31 @@ interface ProductSubscribersDao {
 
     @Query("SELECT * FROM subscribers_products_table WHERE parentProductId=:productId AND parentUserId=:userId LIMIT 1")
     fun getProductAndUserSubscriber(productId: Long, userId: Long): SubscribersProductsCrossRef
+}
+
+@Dao
+interface PendingUserOutgoingMessageDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(userRepoJoin: PendingUserOutgoingMessages): Long
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun update(userRepoJoin: PendingUserOutgoingMessages)
+
+    @Query("SELECT * FROM pending_outgoing_user_message")
+    fun getAllOutGoingUserMessages(): LiveData<List<PendingUserOutgoingMessages>>
+
+
+    @Query("SELECT * FROM pending_outgoing_user_message WHERE outgoingMessageUserId=:userId")
+    fun getUserAllOutGoingUserMessages(userId: Long): LiveData<List<PendingUserOutgoingMessages>>
+
+    @Query("SELECT * FROM pending_outgoing_user_message WHERE priority==1 LIMIT 5")
+    fun getFiveOutgoingUserMessagePriorityHigh(): List<PendingUserOutgoingMessages>
+
+    @Delete
+    fun deleteUserOutgoingMessage(model: PendingUserOutgoingMessages)
+
+    @Query("DELETE FROM pending_outgoing_user_message WHERE outgoingMessageUserId=:outogingMessgaeId")
+    fun deleteUserOutgoingMessage(outogingMessgaeId: Long)
 }
 
 
@@ -167,7 +195,7 @@ interface CampaignMessageDao {
 */
 
 @Database(
-    entities = [UserModel::class, ProductModel::class, Campaign::class, Keywords::class, SubscribersProductsCrossRef::class, UserMessage::class, CampaignMessages::class],
+    entities = [UserModel::class, ProductModel::class, Campaign::class, Keywords::class, SubscribersProductsCrossRef::class, UserMessage::class, CampaignMessages::class, PendingUserOutgoingMessages::class],
     version = 1,
     exportSchema = false
 )
@@ -179,6 +207,7 @@ abstract class UserDatabase : RoomDatabase() {
     abstract val campaignMessageDao: CampaignMessageDao
     abstract val productSubscribersDao: ProductSubscribersDao
     abstract val userMessageDao: UserMessageDao
+    abstract val pendingUserOutgoingMessageDao: PendingUserOutgoingMessageDao
 }
 
 private lateinit var INSTANCE: UserDatabase

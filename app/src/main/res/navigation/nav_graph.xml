@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/productsFragment"
         android:name="com.example.minipromoter.fragment.ProductsFragment"
-        android:label="fragment_products"
+        android:label="Mini Promoter"
         tools:layout="@layout/fragment_products">
         <action
             android:id="@+id/action_productsFragment_to_userFragment"
@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/userFragment"
         android:name="com.example.minipromoter.fragment.UserFragment"
-        android:label="fragment_user"
+        android:label="Subscribers"
         tools:layout="@layout/fragment_user">
         <argument
             android:name="prodName"
@@ -33,7 +33,7 @@
     <fragment
         android:id="@+id/productSubscribers"
         android:name="com.example.minipromoter.fragment.ProductSubscribers"
-        android:label="fragment_subscriber"
+        android:label="Product Subscribers"
         tools:layout="@layout/product_subscribers_fragment">
         <argument
             android:name="productModel"
@@ -45,7 +45,7 @@
     <fragment
         android:id="@+id/campainsFragment"
         android:name="com.example.minipromoter.fragment.CampaignsFragment"
-        android:label="fragment_campains"
+        android:label="Product Campaigns"
         tools:layout="@layout/fragment_campains">
         <argument
             android:name="productModel"
@@ -57,7 +57,7 @@
     <fragment
         android:id="@+id/campainMessagesFragment"
         android:name="com.example.minipromoter.fragment.CampaignMessagesFragment"
-        android:label="fragment_campain_messages"
+        android:label="Campaign Message"
         tools:layout="@layout/fragment_campain_messages">
         <argument
             android:name="model"
@@ -66,8 +66,8 @@
     <fragment
         android:id="@+id/chatsFragment"
         android:name="com.example.minipromoter.fragment.ChatsFragment"
-        android:label="fragment_chats"
-        tools:layout="@layout/fragment_chats" >
+        android:label="Chats"
+        tools:layout="@layout/fragment_chats">
         <argument
             android:name="userModel"
             app:argType="com.example.minipromoter.models.UserModel" />
