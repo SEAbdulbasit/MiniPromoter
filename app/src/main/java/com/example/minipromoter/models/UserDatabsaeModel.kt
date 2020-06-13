@@ -6,10 +6,6 @@ import androidx.room.ForeignKey.CASCADE
 import kotlinx.android.parcel.Parcelize
 
 
-//
-// Created by Abdul Basit on 3/8/2020.
-//
-
 //user model
 @Parcelize
 @Entity(tableName = "users")
@@ -185,7 +181,7 @@ data class UserMessage(
     var messageType: String? = null,
     var message: String? = null,
     var sendTo: String? = null,
-    var isConversationMessage: Boolean = true,
+    var isConversationMessage: Boolean = false,
     var isSuccessfullySend: Boolean = false,
     var messageDeliverStatus: Boolean = false,
     val createdOn: Long = System.currentTimeMillis(),

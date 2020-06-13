@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_productsFragment_to_productSubscribers"
             app:destination="@id/productSubscribers" />
+        <action
+            android:id="@+id/action_productsFragment_to_analytics"
+            app:destination="@id/analytics" />
     </fragment>
     <fragment
         android:id="@+id/userFragment"
@@ -72,4 +75,9 @@
             android:name="userModel"
             app:argType="com.example.minipromoter.models.UserModel" />
     </fragment>
+    <fragment
+        android:id="@+id/analytics"
+        android:name="com.example.minipromoter.Analytics"
+        android:label="Analytics"
+        tools:layout="@layout/analytics_fragment" />
 </navigation>

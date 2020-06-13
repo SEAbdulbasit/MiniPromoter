@@ -21,9 +21,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
-//
-// Created by Abdul Basit on 5/30/2020.
-//
 
 class SendMessagesToUser : JobService() {
     override fun onStopJob(p0: JobParameters?): Boolean {

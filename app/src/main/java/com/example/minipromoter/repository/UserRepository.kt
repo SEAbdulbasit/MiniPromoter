@@ -7,9 +7,7 @@ import com.example.minipromoter.models.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-//
-// Created by Abdul Basit on 3/8/2020.
-//
+
 
 class UserRepository {
     val database = getDatabase(App.getInstance())

@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.minipromoter.App
 import com.example.minipromoter.models.ProductModel
 
-//
-// Created by Abdul Basit on 3/12/2020.
-//
+
 
 class CampaignViewModel(productModel: ProductModel) : BaseViewModel() {
 

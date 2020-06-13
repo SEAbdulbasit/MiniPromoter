@@ -5,20 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.minipromoter.App
 
-//
-// Created by Abdul Basit on 2/19/2020.
-// Copyright (c) 2020 VisionX. All rights reserved.
-//
 
 class FragmentProductViewModel :
     BaseViewModel() {
 
     //products live data to get data from db
     val product = App.getUserRepository().database.productDao.getAllProducts()
-
-    //toolbar tittle
-    val toolbarTittle = MutableLiveData("Products")
-
 
     class Factory :
         ViewModelProvider.Factory {

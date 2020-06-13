@@ -28,11 +28,11 @@ class ChatsViewModel(private val userModel: UserModel) : ViewModel() {
             val userMessage = UserMessage(
                 userId = userModel.userId,
                 message = message.value,
-                isIncomingMessage = false
+                isIncomingMessage = false,
+                isConversationMessage = true
             )
             val messageId =
                 App.getUserRepository().database.userMessageDao.insertUserMessage(userMessage)
-            Log.d("sf", "User id : $messageId")
         }
     }
 

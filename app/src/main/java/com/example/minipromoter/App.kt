@@ -9,21 +9,13 @@ import timber.log.Timber
 import timber.log.Timber.DebugTree
 
 
-
-
-//
-// Created by Abdul Basit on 2/17/2020.
-// Copyright (c) 2020 VisionX. All rights reserved.
-//
-
-
 class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
 
         Stetho.initializeWithDefaults(this)
-        Log.d("App","DB Address: " + DebugDB.getAddressLog())
+        Log.d("App", "DB Address: " + DebugDB.getAddressLog())
 
         Timber.plant(DebugTree())
 
@@ -56,4 +48,10 @@ class App : Application() {
 
         }
     }
+}
+
+object MessageType {
+    const val CONVERSATION = "conversation"
+    const val KEYWORD_MESSAGE = "keyword_message"
+
 }

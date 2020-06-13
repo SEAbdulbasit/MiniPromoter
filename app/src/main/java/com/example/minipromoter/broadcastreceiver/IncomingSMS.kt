@@ -13,9 +13,7 @@ import com.example.minipromoter.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
-//
-// Created by Abdul Basit on 3/8/2020.
-//
+
 
 class IncomingSMS : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
@@ -83,18 +81,6 @@ class IncomingSMS : BroadcastReceiver() {
                     var productSubscribers =
                         productSubscribersList.findLast { it.parentUserId == userModel!!.userId }
 
-                    Log.d(
-                        "Incoming Message",
-                        "User $productSubscribers"
-                    )
-                    Log.d(
-                        "Incoming Message",
-                        "User ID ${userModel?.userId} and product ID ${productModel.productId}"
-                    )
-                    Log.d(
-                        "Incoming Message",
-                        "Incoming message details ${userRepository.database.productSubscribersDao.getAllProductSubscribers()}"
-                    )
 
                     // checking if we have that user subscribed, if not then add otherwise ignore
                     if (productSubscribers == null) {

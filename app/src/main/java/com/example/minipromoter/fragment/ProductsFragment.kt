@@ -1,19 +1,19 @@
 package com.example.minipromoter.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.example.minipromoter.R
 import com.example.minipromoter.adapter.OnClickListener
 import com.example.minipromoter.adapter.ProductSelectionAdapter
 import com.example.minipromoter.databinding.FragmentProductsBinding
 import com.example.minipromoter.dialogs.AddNewProductDialog
 import com.example.minipromoter.viewmodels.FragmentProductViewModel
+import timber.log.Timber
 
 class ProductsFragment : Fragment() {
 
@@ -88,5 +88,27 @@ class ProductsFragment : Fragment() {
         AddNewProductDialog.newInstance().show(childFragmentManager, "dialog")
 
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.products_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menuAnalytics -> {
+                Timber.d("Analytics clicked")
+                findNavController().navigate(ProductsFragmentDirections.actionProductsFragmentToAnalytics())
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 
 }

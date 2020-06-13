@@ -11,9 +11,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-//
-// Created by Abdul Basit on 3/12/2020.
-//
 
 class AddNewProductDialogViewModel : BaseViewModel() {
 

@@ -1,16 +1,19 @@
 package com.example.minipromoter.fragment
 
+import android.R
 import android.app.Activity
 import android.app.PendingIntent
-import android.app.job.JobInfo
-import android.app.job.JobScheduler
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.telephony.SmsManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -21,13 +24,11 @@ import com.example.minipromoter.adapter.CampaignMessagesAdapter
 import com.example.minipromoter.adapter.KeywordsAdapter
 import com.example.minipromoter.adapter.KeywordsClickListner
 import com.example.minipromoter.databinding.FragmentCampainMessagesBinding
-import com.example.minipromoter.jobschedular.SendMessagesToUser
 import com.example.minipromoter.viewmodels.CampaignMessagesViewModel
 import kotlinx.android.synthetic.main.fragment_campain_messages.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 
 class CampaignMessagesFragment : Fragment() {
@@ -100,7 +101,7 @@ class CampaignMessagesFragment : Fragment() {
         // click listener to floating button
         binding.fbAdd.setOnClickListener {
             viewModel.startSendingMessage()
-           // sendMessage(viewModel.model.campaignMessage!!)
+            // sendMessage(viewModel.model.campaignMessage!!)
         }
 
         return binding.root
@@ -162,7 +163,6 @@ class CampaignMessagesFragment : Fragment() {
         }
 
     }
-
 
 
 }

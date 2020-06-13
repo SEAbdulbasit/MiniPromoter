@@ -46,6 +46,9 @@ interface CampaignDao {
     @Query("SELECT * FROM campaigns_table")
     fun getAllCampaigns(): LiveData<List<Campaign>>
 
+    @Query("SELECT * FROM campaigns_table")
+    fun getAllCampaignsWithOutLiveData(): List<Campaign>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllCampaigns(vararg users: Campaign)
 
@@ -67,6 +70,9 @@ interface CampaignDao {
 interface KeywordsDao {
     @Query("SELECT * FROM keywords_table")
     fun getAllKeywords(): LiveData<List<Keywords>>
+
+    @Query("SELECT * FROM keywords_table")
+    fun getAllKeywordsWithOutLiveData(): List<Keywords>
 
     @Query("SELECT * FROM keywords_table WHERE isOption=1 AND campaignId=:value")
     fun getAllOptionKeyword(value: Long): LiveData<List<Keywords>>
@@ -92,6 +98,9 @@ interface CampaignMessageDao {
     @Query("SELECT * FROM campaign_messages")
     fun getAllCampaignMessages(): LiveData<List<CampaignMessages>>
 
+    @Query("SELECT * FROM campaign_messages")
+    fun getAllCampaignMessagesWithOutLiveData(): List<CampaignMessages>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCampaignMessage(vararg campaignMessage: CampaignMessages)
 
@@ -108,6 +117,9 @@ interface UserMessageDao {
 
     @Query("SELECT * FROM user_message")
     fun getAllMessages(): LiveData<List<UserMessage>>
+
+    @Query("SELECT * FROM user_message")
+    fun getAllMessagesWithOutLiveData(): List<UserMessage>
 
     @Query("SELECT * FROM user_message where messageId=:value")
     fun getUserLastMessage(value: Long): UserMessage
