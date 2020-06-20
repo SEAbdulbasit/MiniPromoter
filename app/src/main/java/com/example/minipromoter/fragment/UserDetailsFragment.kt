@@ -34,6 +34,10 @@ class UserDetailsFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        binding.switchActive.setOnCheckedChangeListener { compoundButton, b ->
+            viewModel.isActive.value = b
+        }
+
         observeVariables()
 
         return binding.root
