@@ -74,10 +74,22 @@
         <argument
             android:name="userModel"
             app:argType="com.example.minipromoter.models.UserModel" />
+        <action
+            android:id="@+id/action_chatsFragment_to_userDetailsFragment"
+            app:destination="@id/userDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/analytics"
-        android:name="com.example.minipromoter.Analytics"
+        android:name="com.example.minipromoter.fragment.Analytics"
         android:label="Analytics"
         tools:layout="@layout/analytics_fragment" />
+    <fragment
+        android:id="@+id/userDetailsFragment"
+        android:name="com.example.minipromoter.fragment.UserDetailsFragment"
+        android:label="user_details_fragment"
+        tools:layout="@layout/user_details_fragment" >
+        <argument
+            android:name="userId"
+            app:argType="long" />
+    </fragment>
 </navigation>

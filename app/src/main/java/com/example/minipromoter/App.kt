@@ -2,7 +2,6 @@ package com.example.minipromoter
 
 import android.app.Application
 import android.util.Log
-import com.amitshekhar.DebugDB
 import com.example.minipromoter.repository.UserRepository
 import com.facebook.stetho.Stetho
 import timber.log.Timber
@@ -15,7 +14,6 @@ class App : Application() {
         super.onCreate()
 
         Stetho.initializeWithDefaults(this)
-        Log.d("App", "DB Address: " + DebugDB.getAddressLog())
 
         Timber.plant(DebugTree())
 

@@ -13,16 +13,16 @@ data class UserModel(
     @PrimaryKey(autoGenerate = true)
     var userId: Long = 0,
     val subscriptionDate: Long = System.currentTimeMillis(),
-    val username: String? = null,
+    var username: String? = null,
     val companyId: String? = null,
-    val name: String? = null,
-    val email: String? = null,
-    val phoneNumber: String? = null,
-    val isActivated: Boolean? = false,
+    var name: String? = null,
+    var email: String? = null,
+    var phoneNumber: String? = null,
+    var isActivated: Boolean? = false,
     val isApproved: Boolean? = false,
     val createdOn: Long? = System.currentTimeMillis(),
     val createdBy: String? = null,
-    val updatedOn: Long? = System.currentTimeMillis(),
+    var updatedOn: Long? = System.currentTimeMillis(),
     val updatedBy: String? = null,
     val roleId: Long? = 0
 ) : Parcelable

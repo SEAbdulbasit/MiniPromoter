@@ -20,4 +20,10 @@
     <string name="tittle">Tittle: </string>
     <string name="message">Message</string>
     <string name="analytics">Analytics</string>
+    <string name="most_active_product_by_today">Most active product by today :</string>
+    <string name="userName">User name</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="phoneNumber">Phone number</string>
+    <string name="update_user">Update User</string>
 </resources>

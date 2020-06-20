@@ -10,6 +10,9 @@ interface UserDao {
     @Query("SELECT * FROM users")
     fun getAllUser(): LiveData<List<UserModel>>
 
+    @Update
+    fun updateUser(userModel: UserModel)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg users: UserModel)
 
@@ -18,6 +21,9 @@ interface UserDao {
 
     @Query("SELECT * FROM users WHERE userId LIKE :value LIMIT 1")
     fun getSingleUserWithOutLiveData(value: String): UserModel
+
+    @Query("SELECT * FROM users WHERE userId LIKE :value LIMIT 1")
+    fun getUser(value: Long): LiveData<UserModel>
 
     @Query("SELECT * FROM users WHERE phoneNumber LIKE :value LIMIT 1")
     fun findUserByPhoneNumber(value: String): UserModel?
