@@ -6,7 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.anychart.chart.common.dataentry.ValueDataEntry
 import com.example.minipromoter.App
 import com.example.minipromoter.models.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -50,8 +53,6 @@ class AnalyticsViewModel : BaseViewModel() {
     private fun getMostActiveCampaign() {
 
         coroutineScope.launch(Dispatchers.IO) {
-
-            delay(2000)
             mostSubscribedProductToday(getAllUserMessages)
         }
     }
@@ -120,7 +121,6 @@ class AnalyticsViewModel : BaseViewModel() {
             )
         }
 
-        todayMostActiveProduct.postValue(todayActiveProductData)
 
         campaignHashMap.forEach { mahmap ->
 
@@ -133,7 +133,10 @@ class AnalyticsViewModel : BaseViewModel() {
             )
         }
 
-        todayMostActiveCampaign.postValue(todayActiveCampaignData)
+        coroutineScope.launch(Dispatchers.Main) {
+            todayMostActiveProduct.postValue(todayActiveProductData)
+            todayMostActiveCampaign.postValue(todayActiveCampaignData)
+        }
     }
 
     private fun calculateMessages(

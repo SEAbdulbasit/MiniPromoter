@@ -1,5 +1,6 @@
 package com.example.minipromoter.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -103,7 +104,8 @@ class ProductsFragment : Fragment() {
         return when (item.itemId) {
             R.id.menuAnalytics -> {
                 Timber.d("Analytics clicked")
-                findNavController().navigate(ProductsFragmentDirections.actionProductsFragmentToAnalytics())
+                val intent = Intent(requireContext(), Analytics::class.java)
+                startActivity(intent)
                 true
             }
             else -> super.onOptionsItemSelected(item)

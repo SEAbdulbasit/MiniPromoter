@@ -1,13 +1,11 @@
 package com.example.minipromoter.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.anychart.APIlib
 import com.anychart.AnyChart
-import com.anychart.AnyChartView
 import com.anychart.chart.common.dataentry.ValueDataEntry
 import com.anychart.charts.Cartesian
 import com.anychart.core.cartesian.series.Column
@@ -15,10 +13,11 @@ import com.anychart.enums.Anchor
 import com.anychart.enums.HoverMode
 import com.anychart.enums.Position
 import com.anychart.enums.TooltipPositionMode
+import com.example.minipromoter.R
 import com.example.minipromoter.databinding.AnalyticsFragmentBinding
 import com.example.minipromoter.viewmodels.AnalyticsViewModel
 
-class Analytics : Fragment() {
+class Analytics : AppCompatActivity() {
 
     private lateinit var binding: AnalyticsFragmentBinding
 
@@ -29,30 +28,27 @@ class Analytics : Fragment() {
         ).get(AnalyticsViewModel::class.java)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = AnalyticsFragmentBinding.inflate(inflater)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.analytics_fragment)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
         observeVariables()
 
-        return binding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.viewModel = viewModel
     }
 
     private fun observeVariables() {
 
-        viewModel.todayMostActiveProduct.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        viewModel.todayMostActiveProduct.observe(this, androidx.lifecycle.Observer {
             todayMostActiveProducts(it)
 
         })
 
-        viewModel.todayMostActiveCampaign.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        viewModel.todayMostActiveCampaign.observe(this, androidx.lifecycle.Observer {
             todayMostActiveCampaign(it)
         })
 
@@ -60,7 +56,6 @@ class Analytics : Fragment() {
 
     private fun todayMostActiveProducts(list: List<ValueDataEntry>?) {
 
-        val anyChartView: AnyChartView = binding.anyChartView
 
         val cartesian: Cartesian = AnyChart.column()
 
@@ -71,7 +66,7 @@ class Analytics : Fragment() {
             .position(Position.CENTER_BOTTOM)
             .anchor(Anchor.CENTER_BOTTOM)
             .offsetX(0.0)
-            .offsetY(5.0)
+            .offsetY(100.0)
             .format("{%Value}{groupsSeparator: }")
 
         cartesian.animation(true)
@@ -86,15 +81,12 @@ class Analytics : Fragment() {
         cartesian.xAxis(0).title("Product")
         cartesian.yAxis(0).title("Messages")
 
-        anyChartView.setChart(cartesian)
-
+        binding.anyChartView1.setChart(cartesian)
 
     }
 
     private fun todayMostActiveCampaign(list: List<ValueDataEntry>?) {
 
-        val anyChartView: AnyChartView = binding.anyChartView2
-
         val cartesian: Cartesian = AnyChart.column()
 
         val column: Column = cartesian.column(list)
@@ -104,7 +96,7 @@ class Analytics : Fragment() {
             .position(Position.CENTER_BOTTOM)
             .anchor(Anchor.CENTER_BOTTOM)
             .offsetX(0.0)
-            .offsetY(5.0)
+            .offsetY(100.0)
             .format("{%Value}{groupsSeparator: }")
 
         cartesian.animation(true)
@@ -116,10 +108,10 @@ class Analytics : Fragment() {
         cartesian.tooltip().positionMode(TooltipPositionMode.POINT)
         cartesian.interactivity().hoverMode(HoverMode.BY_X)
 
-        cartesian.xAxis(0).title("Product")
+        cartesian.xAxis(0).title("Campaign")
         cartesian.yAxis(0).title("Messages")
 
-        anyChartView.setChart(cartesian)
+        binding.anyChartView2.setChart(cartesian)
 
 
     }
