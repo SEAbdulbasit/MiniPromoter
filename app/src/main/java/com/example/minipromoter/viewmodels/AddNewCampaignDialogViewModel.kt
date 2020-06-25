@@ -14,7 +14,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
-
 class AddNewCampaignDialogViewModel(val productModel: ProductModel) : BaseViewModel() {
 
     //coroutine scope so we can cancel the job if view model is destroyed
@@ -46,9 +45,8 @@ class AddNewCampaignDialogViewModel(val productModel: ProductModel) : BaseViewMo
                     productId = productModel.productId,
                     campaignMessage = message.value,
                     campaignTittle = tittle.value?.trim(),
-                    expiryAutoMessageReply = expireMessage.value
-
-
+                    expiryAutoMessageReply = expireMessage.value,
+                    endOn = (System.currentTimeMillis() +/*for 7 days*/ (1000 * 60 * 60 * 24 * 7))
                 )
             val campaignId = App.getUserRepository().database.campaignDao.insertCampaign(campaign)
             insertPrimaryKeywords(campaignId, campaign)

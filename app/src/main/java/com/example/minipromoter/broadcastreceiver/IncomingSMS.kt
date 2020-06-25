@@ -14,7 +14,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
 
-
 class IncomingSMS : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val bundle = intent.extras
@@ -82,6 +81,12 @@ class IncomingSMS : BroadcastReceiver() {
                         productSubscribersList.findLast { it.parentUserId == userModel!!.userId }
 
 
+                    //checking for expire time
+                    if (System.currentTimeMillis() > campaignModel.endOn) {
+                        sendMessage(campaignModel.expiryAutoMessageReply!!, sender)
+                    }
+
+
                     // checking if we have that user subscribed, if not then add otherwise ignore
                     if (productSubscribers == null) {
                         productSubscribers =
@@ -91,7 +96,9 @@ class IncomingSMS : BroadcastReceiver() {
                                 isActive = true
                             )
                         val productSubscribersId =
-                            userRepository.database.productSubscribersDao.insert(productSubscribers)
+                            userRepository.database.productSubscribersDao.insert(
+                                productSubscribers
+                            )
                         productSubscribers.id = productSubscribersId
                     }
 
@@ -127,7 +134,6 @@ class IncomingSMS : BroadcastReceiver() {
                 sendMessage("Unable to process the message", sender)
             }
         } else {
-/*
             val userModel = userRepository.database.userDao.findUserByPhoneNumber(sender)
             userModel?.let {
                 val userMessage =
@@ -137,7 +143,7 @@ class IncomingSMS : BroadcastReceiver() {
                         isIncomingMessage = true
                     )
                 userRepository.database.userMessageDao.insertUserMessage(userMessage)
-            }*/
+            }
         }
     }
 

@@ -19,7 +19,7 @@ class ChatsViewModel(private val userModel: UserModel) : ViewModel() {
     private var coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     val userMessages =
-        App.getUserRepository().database.userMessageDao.getAllMessages()//g(userModel.userId)
+        App.getUserRepository().database.userMessageDao.getAllUserMessages(userModel.userId)
     val message = MutableLiveData("")
 
 
