@@ -1,20 +1,19 @@
 package com.example.minipromoter.fragment
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.minipromoter.viewmodels.ProductSubscribersViewModel
-import com.example.minipromoter.R
 import com.example.minipromoter.adapter.UserAdapter
 import com.example.minipromoter.adapter.UserOnClickListener
 import com.example.minipromoter.databinding.ProductSubscribersFragmentBinding
+import com.example.minipromoter.models.UserModel
+import com.example.minipromoter.viewmodels.ProductSubscribersViewModel
 
 
 class ProductSubscribers : Fragment() {
@@ -43,15 +42,18 @@ class ProductSubscribers : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         //adapter object
-        val adapter = UserAdapter(UserOnClickListener {
+        val adapter = UserAdapter(object : UserOnClickListener {
+            override fun onClick(client: UserModel) {
+                findNavController().navigate(
+                    ProductSubscribersDirections.actionProductSubscribersToChatsFragment(
+                        client
+                    )
 
-            //opening the chats fragment/screen
-            findNavController().navigate(
-                ProductSubscribersDirections.actionProductSubscribersToChatsFragment(
-                    it
+
                 )
-            )
-        })
+            }
+        }
+        )
 
         //assigning adapter to recyclerview
         binding.rvUsers.adapter = adapter

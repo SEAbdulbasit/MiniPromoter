@@ -63,6 +63,6 @@ class UserMessagesAdapter(private val onClickListener: UserMessageOnClickListene
     }
 }
 
-class UserMessageOnClickListener(val clickListener: (client: UserMessage) -> Unit) {
-    fun onClick(client: UserMessage) = clickListener(client)
+interface UserMessageOnClickListener {
+    fun onClick(client: UserMessage)
 }

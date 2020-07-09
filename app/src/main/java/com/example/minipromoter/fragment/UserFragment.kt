@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.minipromoter.adapter.UserAdapter
 import com.example.minipromoter.adapter.UserOnClickListener
 import com.example.minipromoter.databinding.FragmentUserBinding
+import com.example.minipromoter.models.UserModel
 import com.example.minipromoter.viewmodels.UserViewModel
 
 /**
@@ -36,7 +37,10 @@ class UserFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        val adapter = UserAdapter(UserOnClickListener {
+        val adapter = UserAdapter(object :UserOnClickListener {
+            override fun onClick(client: UserModel) {
+
+            }
 
         })
 

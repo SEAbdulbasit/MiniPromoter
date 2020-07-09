@@ -62,6 +62,6 @@ class CampaignMessagesAdapter(private val onClickListener: CampaignMessageOnClic
     }
 }
 
-class CampaignMessageOnClickListener(val clickListener: (client: CampaignMessages) -> Unit) {
-    fun onClick(client: CampaignMessages) = clickListener(client)
+interface CampaignMessageOnClickListener {
+    fun onClick(client: CampaignMessages)
 }

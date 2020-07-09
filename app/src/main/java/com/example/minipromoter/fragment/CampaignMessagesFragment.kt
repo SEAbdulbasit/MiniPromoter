@@ -1,6 +1,5 @@
 package com.example.minipromoter.fragment
 
-import android.R
 import android.app.Activity
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -13,7 +12,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -24,6 +22,7 @@ import com.example.minipromoter.adapter.CampaignMessagesAdapter
 import com.example.minipromoter.adapter.KeywordsAdapter
 import com.example.minipromoter.adapter.KeywordsClickListner
 import com.example.minipromoter.databinding.FragmentCampainMessagesBinding
+import com.example.minipromoter.models.CampaignMessages
 import com.example.minipromoter.viewmodels.CampaignMessagesViewModel
 import kotlinx.android.synthetic.main.fragment_campain_messages.*
 import kotlinx.coroutines.Dispatchers
@@ -72,7 +71,11 @@ class CampaignMessagesFragment : Fragment() {
 
         // assigning adapter to campaign messages recyclerview
         binding.rvCampaignMessages.adapter =
-            CampaignMessagesAdapter(CampaignMessageOnClickListener {
+            CampaignMessagesAdapter(object :CampaignMessageOnClickListener {
+                override fun onClick(client: CampaignMessages) {
+
+                }
+
             })
 
         // observing the campaign message live data so we can notify the adapter

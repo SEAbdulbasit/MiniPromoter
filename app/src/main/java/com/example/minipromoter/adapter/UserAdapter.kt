@@ -7,9 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.minipromoter.R
-import com.example.minipromoter.databinding.ProductItemBinding
 import com.example.minipromoter.databinding.UserItemBinding
-import com.example.minipromoter.models.ProductModel
 import com.example.minipromoter.models.UserModel
 
 class UserAdapter(private val onClickListener: UserOnClickListener) :
@@ -60,6 +58,6 @@ class UserAdapter(private val onClickListener: UserOnClickListener) :
     }
 }
 
-class UserOnClickListener(val clickListener: (client: UserModel) -> Unit) {
-    fun onClick(client: UserModel) = clickListener(client)
+interface UserOnClickListener {
+    fun onClick(client: UserModel)
 }

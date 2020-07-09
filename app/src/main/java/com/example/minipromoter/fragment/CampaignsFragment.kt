@@ -14,6 +14,7 @@ import com.example.minipromoter.adapter.CampaignAdapter
 import com.example.minipromoter.adapter.CampainOnClickListener
 import com.example.minipromoter.databinding.FragmentCampainsBinding
 import com.example.minipromoter.dialogs.AddNewCampaignDialog
+import com.example.minipromoter.models.Campaign
 import com.example.minipromoter.viewmodels.CampaignViewModel
 import kotlinx.android.synthetic.main.fragment_campains.*
 
@@ -38,12 +39,16 @@ class CampaignsFragment : Fragment() {
 
         val binding = FragmentCampainsBinding.inflate(inflater)
 
-        binding.rvCampains.adapter = CampaignAdapter(CampainOnClickListener {
-            findNavController().navigate(
-                CampaignsFragmentDirections.actionCampainsFragmentToCampainMessagesFragment(
-                    it
+        binding.rvCampains.adapter = CampaignAdapter(object : CampainOnClickListener {
+            override fun onClick(client: Campaign) {
+
+                findNavController().navigate(
+                    CampaignsFragmentDirections.actionCampainsFragmentToCampainMessagesFragment(
+                        client
+                    )
                 )
-            )
+            }
+
         })
 
         binding.rvCampains.addItemDecoration(

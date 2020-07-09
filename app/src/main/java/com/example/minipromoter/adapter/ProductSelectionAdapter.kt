@@ -63,10 +63,7 @@ class ProductSelectionAdapter(val onClickListener: OnClickListener) :
     }
 }
 
-class OnClickListener(
-    val clickListener: (client: ProductModel) -> Unit,
-    val subscriberListener: (client: ProductModel) -> Unit
-) {
-    fun onClick(client: ProductModel) = clickListener(client)
-    fun onSubscribersClicked(client: ProductModel) = subscriberListener(client)
+interface OnClickListener{
+    fun onClick(client: ProductModel)
+    fun onSubscribersClicked(client: ProductModel)
 }

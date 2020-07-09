@@ -11,6 +11,7 @@ import com.example.minipromoter.R
 import com.example.minipromoter.adapter.UserMessageOnClickListener
 import com.example.minipromoter.adapter.UserMessagesAdapter
 import com.example.minipromoter.databinding.FragmentChatsBinding
+import com.example.minipromoter.models.UserMessage
 import com.example.minipromoter.viewmodels.ChatsViewModel
 import timber.log.Timber
 
@@ -34,7 +35,11 @@ class ChatsFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         //assigning adapter
-        binding.rvMessages.adapter = UserMessagesAdapter(UserMessageOnClickListener { })
+        binding.rvMessages.adapter = UserMessagesAdapter(object : UserMessageOnClickListener {
+            override fun onClick(client: UserMessage) {
+
+            }
+        })
 
         //observing the user message so we can notify
         viewModel.userMessages.observe(viewLifecycleOwner, Observer {

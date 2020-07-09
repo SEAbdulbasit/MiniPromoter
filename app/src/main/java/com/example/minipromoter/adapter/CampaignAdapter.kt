@@ -71,6 +71,6 @@ class CampaignAdapter(private val onClickListener: CampainOnClickListener) :
     }
 }
 
-class CampainOnClickListener(val clickListener: (client: Campaign) -> Unit) {
-    fun onClick(client: Campaign) = clickListener(client)
+interface CampainOnClickListener {
+    fun onClick(client: Campaign)
 }

@@ -13,6 +13,7 @@ import com.example.minipromoter.adapter.OnClickListener
 import com.example.minipromoter.adapter.ProductSelectionAdapter
 import com.example.minipromoter.databinding.FragmentProductsBinding
 import com.example.minipromoter.dialogs.AddNewProductDialog
+import com.example.minipromoter.models.ProductModel
 import com.example.minipromoter.viewmodels.FragmentProductViewModel
 import timber.log.Timber
 
@@ -37,23 +38,22 @@ class ProductsFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         //assigning adapter to recycle view
-        binding.rvProduct.adapter = ProductSelectionAdapter(
-
-            //forwarding click listeners
-            OnClickListener(clickListener = {
-
+        binding.rvProduct.adapter = ProductSelectionAdapter(object : OnClickListener {
+            override fun onClick(client: ProductModel) {
                 val directions =
-                    ProductsFragmentDirections.actionProductsFragmentToCampainsFragment(it)
+                    ProductsFragmentDirections.actionProductsFragmentToCampainsFragment(client)
                 findNavController().navigate(directions)
+            }
 
-            }, subscriberListener = {
+            override fun onSubscribersClicked(client: ProductModel) {
                 findNavController().navigate(
                     ProductsFragmentDirections.actionProductsFragmentToProductSubscribers(
-                        productModel = it
+                        productModel = client
                     )
                 )
+            }
+        }
 
-            })
         )
 
         // adding line each item in recycle view
