@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.telephony.SmsManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_campain_messages.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 class CampaignMessagesFragment : Fragment() {
@@ -97,7 +97,7 @@ class CampaignMessagesFragment : Fragment() {
         })
 
         viewModel.productSubscribers.observe(viewLifecycleOwner, Observer {
-            Log.d("CampaignMessagesFragment", "Subscribers Size : " + it.size)
+            Timber.d("Subscribers Size : " + it.size)
         })
 
 
@@ -118,10 +118,10 @@ class CampaignMessagesFragment : Fragment() {
             GlobalScope.launch(Dispatchers.IO) {
 
                 val SENT = "SMS_SENT"
-                val sentPI = PendingIntent.getBroadcast(context!!, 0, Intent(SENT), 0)
+                val sentPI = PendingIntent.getBroadcast(requireContext(), 0, Intent(SENT), 0)
 
                 //callback if message was send successfully or not
-                activity!!.registerReceiver(object : BroadcastReceiver() {
+                requireActivity().registerReceiver(object : BroadcastReceiver() {
                     override fun onReceive(arg0: Context, arg1: Intent) {
                         when (resultCode) {
                             Activity.RESULT_OK -> {

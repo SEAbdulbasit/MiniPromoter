@@ -52,17 +52,7 @@ class ProductsFragment : Fragment() {
                     )
                 )
             }
-        }
-
-        )
-
-        // adding line each item in recycle view
-        binding.rvProduct.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                DividerItemDecoration.VERTICAL
-            )
-        )
+        })
 
         //observing products live data so we can notify the adapter
         viewModel.product.observe(viewLifecycleOwner, Observer {
