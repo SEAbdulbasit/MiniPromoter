@@ -14,25 +14,26 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="0dp"
-        app:cardCornerRadius="0dp">
+        android:layout_margin="5dp"
+        android:backgroundTint="@color/grey"
+        app:cardCornerRadius="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/ten_dp">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/materialTextView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tittle"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="@dimen/sixteen_sp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView" />
+            <!-- <com.google.android.material.textview.MaterialTextView
+                 android:id="@+id/materialTextView3"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="@string/tittle"
+                 android:textColor="@color/black"
+                 android:textStyle="bold"
+                 android:textSize="@dimen/sixteen_sp"
+                 app:layout_constraintBottom_toBottomOf="@+id/textView"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toTopOf="@+id/textView" />-->
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/textView"
@@ -41,23 +42,24 @@
                 android:text='@{model.campaignTittle}'
                 android:textColor="@color/black"
                 android:textSize="@dimen/sixteen_sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/divider"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Tittle" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/materialTextView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/five_dp"
-                android:text="@string/message2"
-                android:textSize="@dimen/sixteen_sp"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/materialTextView3" />
-
+            <!--    <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/materialTextView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/five_dp"
+                    android:text="@string/message2"
+                    android:textSize="@dimen/sixteen_sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/materialTextView3" />
+    -->
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/materialTextView"
                 android:layout_width="0dp"

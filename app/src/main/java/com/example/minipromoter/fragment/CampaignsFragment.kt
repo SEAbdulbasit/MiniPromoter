@@ -51,13 +51,6 @@ class CampaignsFragment : Fragment() {
 
         })
 
-        binding.rvCampains.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                DividerItemDecoration.VERTICAL
-            )
-        )
-
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
