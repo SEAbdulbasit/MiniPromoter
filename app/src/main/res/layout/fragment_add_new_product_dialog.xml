@@ -38,6 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusedByDefault="false"
+                android:textColor="@color/black"
                 android:hint="@string/enter_product_name"
                 android:inputType="textEmailAddress"
                 android:singleLine="true"
